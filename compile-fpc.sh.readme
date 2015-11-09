@@ -1,0 +1,20 @@
+echo Only windows supported for Pascal because of SimpleSocket.pas implementation > compilation.log
+exit 1
+
+name="MyStrategy"
+
+if [ ! -f $name.pas ]
+then
+    echo Unable to find $name.pas > compilation.log
+    exit 1
+fi
+
+rm -f $name
+
+fpc -dONLINE_JUDGE -Cs67107839 -Mdelphi -XS Runner.dpr -o%name% 1>compilation.log
+
+if [ ! -f $name ]
+then
+    echo Unable to find $name >> compilation.log
+    exit 1
+fi
