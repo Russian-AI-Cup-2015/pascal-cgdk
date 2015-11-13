@@ -3,137 +3,140 @@ unit UnitControl;
 interface
 
 uses
-    Math, TypeControl;
+  Math, TypeControl;
 
 type
-    TUnit = class
-    private
-        FId: Int64;
-        FMass: Double;
-        FX: Double;
-        FY: Double;
-        FSpeedX: Double;
-        FSpeedY: Double;
-        FAngle: Double;
-        FAngularSpeed: Double;
+  TUnit = class
+  private
+    FId: Int64;
+    FMass: Double;
+    FX: Double;
+    FY: Double;
+    FSpeedX: Double;
+    FSpeedY: Double;
+    FAngle: Double;
+    FAngularSpeed: Double;
+    function GetId: Int64;
+    function GetMass: Double;
+    function GetX: Double;
+    function GetY: Double;
+    function GetSpeedX: Double;
+    function GetSpeedY: Double;
+    function GetAngle: Double;
+    function GetAngularSpeed: Double;
+  public
+    property Id: Int64 read GetId;
+    property Mass: Double read GetMass;
+    property X: Double read GetX;
+    property Y: Double read GetY;
+    property SpeedX: Double read GetSpeedX;
+    property SpeedY: Double read GetSpeedY;
+    property Angle: Double read GetAngle;
+    property AngularSpeed: Double read GetAngularSpeed;
+    constructor Create(const AId: Int64; const AMass: Double; const AX: Double; const AY: Double; 
+      const ASpeedX: Double; const ASpeedY: Double; const AAngle: Double; const AAngularSpeed: Double);
+    destructor Destroy; override;
+    function GetAngleTo(x: Double; y: Double): Double; overload;
+    function GetAngleTo(otherUnit: TUnit): Double; overload;
+    function GetDistanceTo(x: Double; y: Double): Double; overload;
+    function GetDistanceTo(otherUnit: TUnit): Double; overload;
+  end;
 
-    protected
-        constructor Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-                angularSpeed: Double);
-
-    public
-        function GetId: Int64;
-        function GetMass: Double;
-        function GetX: Double;
-        function GetY: Double;
-        function GetSpeedX: Double;
-        function GetSpeedY: Double;
-        function GetAngle: Double;
-        function GetAngularSpeed: Double;
-
-        function GetAngleTo(x: Double; y: Double): Double; overload;
-        function GetAngleTo(otherUnit: TUnit): Double; overload;
-        function GetDistanceTo(x: Double; y: Double): Double; overload;
-        function GetDistanceTo(otherUnit: TUnit): Double; overload;
-
-        destructor Destroy; override;
-
-    end;
-
-    TUnitArray = array of TUnit;
+  TUnitArray = array of TUnit;
 
 implementation
 
-constructor TUnit.Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-        angularSpeed: Double);
-begin
-    FId := id;
-    FMass := mass;
-    FX := x;
-    FY := y;
-    FSpeedX := speedX;
-    FSpeedY := speedY;
-    FAngle := angle;
-    FAngularSpeed := angularSpeed;
-end;
-
 function TUnit.GetId: Int64;
 begin
-    result := FId;
+  Result := FId;
 end;
 
 function TUnit.GetMass: Double;
 begin
-    result := FMass;
+  Result := FMass;
 end;
 
 function TUnit.GetX: Double;
 begin
-    result := FX;
+  Result := FX;
 end;
 
 function TUnit.GetY: Double;
 begin
-    result := FY;
+  Result := FY;
 end;
 
 function TUnit.GetSpeedX: Double;
 begin
-    result := FSpeedX;
+  Result := FSpeedX;
 end;
 
 function TUnit.GetSpeedY: Double;
 begin
-    result := FSpeedY;
+  Result := FSpeedY;
 end;
 
 function TUnit.GetAngle: Double;
 begin
-    result := FAngle;
+  Result := FAngle;
 end;
 
 function TUnit.GetAngularSpeed: Double;
 begin
-    result := FAngularSpeed;
+  Result := FAngularSpeed;
 end;
 
-function TUnit.GetAngleTo(x: Double; y: Double): Double;
-var
-    absoluteAngleTo, relativeAngleTo: Double;
-
+constructor TUnit.Create(const AId: Int64; const AMass: Double; const AX: Double; const AY: Double; 
+  const ASpeedX: Double; const ASpeedY: Double; const AAngle: Double; const AAngularSpeed: Double);
 begin
-    absoluteAngleTo := ArcTan2(y - FY, x - FX);
-    relativeAngleTo := absoluteAngleTo - FAngle;
-
-    while relativeAngleTo > PI do begin
-        relativeAngleTo := relativeAngleTo - 2 * PI;
-    end;
-
-    while relativeAngleTo < -PI do begin
-        relativeAngleTo := relativeAngleTo + 2 * PI;
-    end;
-
-    result := relativeAngleTo;
-end;
-
-function TUnit.getAngleTo(otherUnit: TUnit): Double;
-begin
-    result := GetAngleTo(otherUnit.FX, otherUnit.FY);
-end;
-
-function TUnit.getDistanceTo(x: Double; y: Double): Double;
-begin
-    result := Sqrt(Sqr(FX - x) + Sqr(FY - y));
-end;
-
-function TUnit.getDistanceTo(otherUnit: TUnit): Double;
-begin
-    result := GetDistanceTo(otherUnit.FX, otherUnit.FY);
+  FId := AId;
+  FMass := AMass;
+  FX := AX;
+  FY := AY;
+  FSpeedX := ASpeedX;
+  FSpeedY := ASpeedY;
+  FAngle := AAngle;
+  FAngularSpeed := AAngularSpeed;
 end;
 
 destructor TUnit.Destroy;
 begin
-    inherited;
+  inherited;
+end;
+
+function TUnit.GetAngleTo(x: Double; y: Double): Double;
+var
+  absoluteAngleTo, relativeAngleTo: Double;
+
+begin
+  absoluteAngleTo := ArcTan2(y - FY, x - FX);
+  relativeAngleTo := absoluteAngleTo - FAngle;
+
+  while relativeAngleTo > PI do 
+  begin
+    RelativeAngleTo := relativeAngleTo - 2 * PI;
+  end;
+  while relativeAngleTo < -PI do 
+  begin
+    RelativeAngleTo := relativeAngleTo + 2 * PI;
+  end;
+
+  Result := relativeAngleTo;
+end;
+
+function TUnit.getAngleTo(otherUnit: TUnit): Double;
+begin
+  Result := GetAngleTo(otherUnit.X, otherUnit.Y);
+end;
+
+function TUnit.getDistanceTo(x: Double; y: Double): Double;
+begin
+  Result := Sqrt(Sqr(FX - x) + Sqr(FY - y));
+end;
+
+function TUnit.getDistanceTo(otherUnit: TUnit): Double;
+begin
+  Result := GetDistanceTo(otherUnit.X, otherUnit.Y);
 end;
 
 end.
