@@ -3,70 +3,67 @@ unit PlayerContextControl;
 interface
 
 uses
-    Math, TypeControl, CarControl, WorldControl;
+  Math, TypeControl, CarControl, WorldControl;
 
 type
-    TPlayerContext = class
-    private
-        FCars: TCarArray;
-        FWorld: TWorld;
+  TPlayerContext = class
+  private
+    FCars: TCarArray;
+    FWorld: TWorld;
+    function GetCars: TCarArray;
+    function GetWorld: TWorld;
+  public
+    property Cars: TCarArray read GetCars;
+    property World: TWorld read GetWorld;
+    constructor Create(const ACars: TCarArray; const AWorld: TWorld);
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create(cars: TCarArray; world: TWorld);
-
-        function GetCars: TCarArray;
-        function GetWorld: TWorld;
-
-        destructor Destroy; override;
-
-    end;
-
-    TPlayerContextArray = array of TPlayerContext;
+  TPlayerContextArray = array of TPlayerContext;
 
 implementation
 
-constructor TPlayerContext.Create(cars: TCarArray; world: TWorld);
-begin
-    if cars = nil then begin
-        FCars := nil;
-    end else begin
-        FCars := Copy(cars, 0, Length(cars));
-    end;
-    FWorld := world;
-end;
-
 function TPlayerContext.GetCars: TCarArray;
 begin
-    if FCars = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FCars, 0, Length(FCars));
-    end;
+  if Assigned(FCars) then 
+    Result := Copy(FCars, 0, Length(FCars))
+  else  
+    Result := nil;
 end;
 
 function TPlayerContext.GetWorld: TWorld;
 begin
-    result := FWorld;
+  Result := FWorld;
+end;
+
+constructor TPlayerContext.Create(const ACars: TCarArray; const AWorld: TWorld);
+begin
+  if Assigned(ACars) then 
+    FCars := Copy(ACars, 0, Length(ACars))
+  else
+    FCars := nil;
+  FWorld := AWorld;
 end;
 
 destructor TPlayerContext.Destroy;
 var
-    i: LongInt;
-
+  I: LongInt;
 begin
-    if FCars <> nil then begin
-        for i := High(FCars) downto 0 do begin
-            if FCars[i] <> nil then begin
-                FCars[i].Free;
-            end;
-        end;
+  if Assigned(FCars) then 
+  begin
+    if Length(FCars) > 0 then
+    begin
+      for i := High(FCars) downto 0 do 
+      begin
+        if Assigned(FCars[I]) then 
+          FCars[i].Free;
+      end;
+      SetLength(FCars, 0);
     end;
-
-    if FWorld <> nil then begin
-        FWorld.Free;
-    end;
-
-    inherited;
+  end;
+  if Assigned(FWorld) then 
+    FWorld.Free;
+  inherited;
 end;
 
 end.
