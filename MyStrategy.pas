@@ -3,31 +3,31 @@ unit MyStrategy;
 interface
 
 uses
-    StrategyControl, BonusControl, BonusTypeControl, CarControl, CarTypeControl, DirectionControl,
-    GameControl, MoveControl, OilSlickControl, PlayerControl, ProjectileControl,
-    ProjectileTypeControl, TileTypeControl, TypeControl, WorldControl;
+  StrategyControl, BonusControl, BonusTypeControl, CarControl, CarTypeControl, DirectionControl,
+  GameControl, MoveControl, OilSlickControl, PlayerControl, ProjectileControl,
+  ProjectileTypeControl, TileTypeControl, TypeControl, WorldControl;
 
 type
-    TMyStrategy = class (TStrategy)
-    public
-        procedure Move(me: TCar; world: TWorld; game: TGame; move: TMove); override;
-
-    end;
+  TMyStrategy = class(TStrategy)
+  public
+    procedure Move(const AMe: TCar; const AWorld: TWorld; const AGame: TGame; const AMove: TMove); override;
+  end;
 
 implementation
 
 uses
-    Math;
+  Math;
     
-procedure TMyStrategy.Move(me: TCar; world: TWorld; game: TGame; move: TMove);
+procedure TMyStrategy.Move(const AMe: TCar; const AWorld: TWorld; const AGame: TGame; const AMove: TMove);
 begin
-    move.SetEnginePower(1.0);
-    move.SetThrowProjectile(true);
-    move.SetSpillOil(true);
+  AMove.EnginePower := 1.0;
+  AMove.IsThrowProjectile := True;
+  AMove.IsSpillOil := True;
 
-    if (world.GetTick() > game.GetInitialFreezeDurationTicks()) then begin
-        move.SetUseNitro(true);
-    end;
+  if AWorld.Tick > AGame.InitialFreezeDurationTicks then 
+  begin
+    AMove.IsUseNitro := True;
+  end;
 end;
 
 end.
