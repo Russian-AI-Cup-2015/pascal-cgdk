@@ -3,115 +3,117 @@ unit MoveControl;
 interface
 
 uses
-    Math, TypeControl;
+  Math, TypeControl;
 
 type
-    TMove = class
-    private
-        FEnginePower: Double;
-        FBrake: Boolean;
-        FWheelTurn: Double;
-        FThrowProjectile: Boolean;
-        FUseNitro: Boolean;
-        FSpillOil: Boolean;
+  TMove = class
+  private
+    FEnginePower: Double;
+    FIsBrake: Boolean;
+    FWheelTurn: Double;
+    FIsThrowProjectile: Boolean;
+    FIsUseNitro: Boolean;
+    FIsSpillOil: Boolean;
+    function GetEnginePower: Double;
+    procedure SetEnginePower(Value: Double);
+    function GetIsBrake: Boolean;
+    procedure SetIsBrake(Value: Boolean);
+    function GetWheelTurn: Double;
+    procedure SetWheelTurn(Value: Double);
+    function GetIsThrowProjectile: Boolean;
+    procedure SetIsThrowProjectile(Value: Boolean);
+    function GetIsUseNitro: Boolean;
+    procedure SetIsUseNitro(Value: Boolean);
+    function GetIsSpillOil: Boolean;
+    procedure SetIsSpillOil(Value: Boolean);
+  public
+    property EnginePower: Double read GetEnginePower write SetEnginePower;
+    property IsBrake: Boolean read GetIsBrake write SetIsBrake;
+    property WheelTurn: Double read GetWheelTurn write SetWheelTurn;
+    property IsThrowProjectile: Boolean read GetIsThrowProjectile write SetIsThrowProjectile;
+    property IsUseNitro: Boolean read GetIsUseNitro write SetIsUseNitro;
+    property IsSpillOil: Boolean read GetIsSpillOil write SetIsSpillOil;
+    constructor Create;
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create;
-
-        function GetEnginePower: Double;
-        procedure SetEnginePower(enginePower: Double);
-        function GetBrake: Boolean;
-        procedure SetBrake(brake: Boolean);
-        function GetWheelTurn: Double;
-        procedure SetWheelTurn(wheelTurn: Double);
-        function GetThrowProjectile: Boolean;
-        procedure SetThrowProjectile(throwProjectile: Boolean);
-        function GetUseNitro: Boolean;
-        procedure SetUseNitro(useNitro: Boolean);
-        function GetSpillOil: Boolean;
-        procedure SetSpillOil(spillOil: Boolean);
-
-        destructor Destroy; override;
-
-    end;
-
-    TMoveArray = array of TMove;
+  TMoveArray = array of TMove;
 
 implementation
 
-constructor TMove.Create;
-begin
-    FEnginePower := 0.0;
-    FBrake := False;
-    FWheelTurn := 0.0;
-    FThrowProjectile := False;
-    FUseNitro := False;
-    FSpillOil := False;
-end;
-
 function TMove.GetEnginePower: Double;
 begin
-    result := FEnginePower;
+  Result := FEnginePower;
 end;
 
-procedure TMove.SetEnginePower(enginePower: Double);
+procedure TMove.SetEnginePower(Value: Double);
 begin
-    FEnginePower := enginePower;
+  FEnginePower := Value;
 end;
 
-function TMove.GetBrake: Boolean;
+function TMove.GetIsBrake: Boolean;
 begin
-    result := FBrake;
+  Result := FIsBrake;
 end;
 
-procedure TMove.SetBrake(brake: Boolean);
+procedure TMove.SetIsBrake(Value: Boolean);
 begin
-    FBrake := brake;
+    FIsBrake := Value;
 end;
 
 function TMove.GetWheelTurn: Double;
 begin
-    result := FWheelTurn;
+  Result := FWheelTurn;
 end;
 
-procedure TMove.SetWheelTurn(wheelTurn: Double);
+procedure TMove.SetWheelTurn(Value: Double);
 begin
-    FWheelTurn := wheelTurn;
+  FWheelTurn := wheelTurn;
 end;
 
-function TMove.GetThrowProjectile: Boolean;
+function TMove.GetIsThrowProjectile: Boolean;
 begin
-    result := FThrowProjectile;
+  Result := FIsThrowProjectile;
 end;
 
-procedure TMove.SetThrowProjectile(throwProjectile: Boolean);
+procedure TMove.SetIsThrowProjectile(Value: Boolean);
 begin
-    FThrowProjectile := throwProjectile;
+  FIsThrowProjectile := Value;
 end;
 
-function TMove.GetUseNitro: Boolean;
+function TMove.GetIsUseNitro: Boolean;
 begin
-    result := FUseNitro;
+  Result := FisUseNitro;
 end;
 
-procedure TMove.SetUseNitro(useNitro: Boolean);
+procedure TMove.SetIsUseNitro(Value: Boolean);
 begin
-    FUseNitro := useNitro;
+  FIsUseNitro := Value;
 end;
 
-function TMove.GetSpillOil: Boolean;
+function TMove.GetIsSpillOil: Boolean;
 begin
-    result := FSpillOil;
+  Result := FIsSpillOil;
 end;
 
-procedure TMove.SetSpillOil(spillOil: Boolean);
+procedure TMove.SetIsSpillOil(Value: Boolean);
 begin
-    FSpillOil := spillOil;
+  FIsSpillOil := Value;
+end;
+
+constructor TMove.Create;
+begin
+  FEnginePower := 0.0;
+  FIsBrake := False;
+  FWheelTurn := 0.0;
+  FIsThrowProjectile := False;
+  FIsUseNitro := False;
+  FIsSpillOil := False;
 end;
 
 destructor TMove.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.

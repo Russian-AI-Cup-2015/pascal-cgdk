@@ -1,31 +1,30 @@
 uses
-    SysUtils, RemoteProcessClient, StrategyControl, MyStrategy,
-    CarControl, PlayerContextControl, MoveControl, GameControl;
+  SysUtils, RemoteProcessClient, StrategyControl, MyStrategy,
+  CarControl, PlayerContextControl, MoveControl, GameControl;
 
 type
-    TRunner = class
-    private
-        FRemoteProcessClient: TRemoteProcessClient;
-        FToken: String;
-
-    public
-        constructor Create(arguments: array of String);
-
-        procedure Run;
-
-        destructor Destroy; override;
-
-    end;
+  TRunner = class
+  private
+    FRemoteProcessClient: TRemoteProcessClient;
+    FToken: String;
+  public
+    constructor Create(arguments: array of String);
+    destructor Destroy; override;
+    procedure Run;
+  end;
 
 constructor TRunner.Create(arguments: array of String);
 begin
-    if Length(arguments) = 4 then begin
-        FRemoteProcessClient := TRemoteProcessClient.Create(arguments[1], StrToInt(arguments[2]));
-        FToken := arguments[3];
-    end else begin
-        FRemoteProcessClient := TRemoteProcessClient.Create('127.0.0.1', 31001);
-        FToken := '0000000000000000';
-    end;
+  if Length(arguments) = 4 then 
+  begin
+    FRemoteProcessClient := TRemoteProcessClient.Create(arguments[1], StrToInt(arguments[2]));
+    FToken := arguments[3];
+  end 
+  else 
+  begin
+    FRemoteProcessClient := TRemoteProcessClient.Create('127.0.0.1', 31001);
+    FToken := '0000000000000000';
+  end;
 end;
 
 procedure TRunner.Run;
@@ -59,7 +58,7 @@ begin
             break;
         end;
 
-        playerCars := playerContext.GetCars;
+        playerCars := playerContext.Cars;
         if Length(playerCars) <> teamSize then begin
             break;
         end;
@@ -71,7 +70,7 @@ begin
 
             move := TMove.Create;
             moves[carIndex] := move;
-            strategies[playerCar.GetTeammateIndex].Move(playerCar, playerContext.GetWorld, game, move);
+            strategies[playerCar.TeammateIndex].Move(playerCar, playerContext.World, game, move);
         end;
 
         FRemoteProcessClient.WriteMovesMessage(moves);

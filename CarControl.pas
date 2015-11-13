@@ -3,189 +3,208 @@ unit CarControl;
 interface
 
 uses
-    Math, TypeControl, CarTypeControl, RectangularUnitControl;
+  Math, TypeControl, CarTypeControl, RectangularUnitControl;
 
 type
-    TCar = class (TRectangularUnit)
-    private
-        FPlayerId: Int64;
-        FTeammateIndex: LongInt;
-        FTeammate: Boolean;
-        FType: TCarType;
-        FProjectileCount: LongInt;
-        FNitroChargeCount: LongInt;
-        FOilCanisterCount: LongInt;
-        FRemainingProjectileCooldownTicks: LongInt;
-        FRemainingNitroCooldownTicks: LongInt;
-        FRemainingOilCooldownTicks: LongInt;
-        FRemainingNitroTicks: LongInt;
-        FRemainingOiledTicks: LongInt;
-        FDurability: Double;
-        FEnginePower: Double;
-        FWheelTurn: Double;
-        FNextWaypointX: LongInt;
-        FNextWaypointY: LongInt;
-        FFinishedTrack: Boolean;
+  TCar = class(TRectangularUnit)
+  private
+    FPlayerId: Int64;
+    FTeammateIndex: LongInt;
+    FIsTeammate: Boolean;
+    FCarType: TCarType;
+    FProjectileCount: LongInt;
+    FNitroChargeCount: LongInt;
+    FOilCanisterCount: LongInt;
+    FRemainingProjectileCooldownTicks: LongInt;
+    FRemainingNitroCooldownTicks: LongInt;
+    FRemainingOilCooldownTicks: LongInt;
+    FRemainingNitroTicks: LongInt;
+    FRemainingOiledTicks: LongInt;
+    FDurability: Double;
+    FEnginePower: Double;
+    FWheelTurn: Double;
+    FNextWaypointX: LongInt;
+    FNextWaypointY: LongInt;
+    FIsFinishedTrack: Boolean;
+    function GetPlayerId: Int64;
+    function GetTeammateIndex: LongInt;
+    function GetIsTeammate: Boolean;
+    function GetCarType: TCarType;
+    function GetProjectileCount: LongInt;
+    function GetNitroChargeCount: LongInt;
+    function GetOilCanisterCount: LongInt;
+    function GetRemainingProjectileCooldownTicks: LongInt;
+    function GetRemainingNitroCooldownTicks: LongInt;
+    function GetRemainingOilCooldownTicks: LongInt;
+    function GetRemainingNitroTicks: LongInt;
+    function GetRemainingOiledTicks: LongInt;
+    function GetDurability: Double;
+    function GetEnginePower: Double;
+    function GetWheelTurn: Double;
+    function GetNextWaypointX: LongInt;
+    function GetNextWaypointY: LongInt;
+    function GetIsFinishedTrack: Boolean;
+  public
+    property PlayerId: Int64 read GetPlayerId;
+    property TeammateIndex: LongInt read GetTeammateIndex;
+    property IsTeammate: Boolean read GetIsTeammate;
+    property CarType: TCarType read GetCarType;
+    property ProjectileCount: LongInt read GetProjectileCount;
+    property NitroChargeCount: LongInt read GetNitroChargeCount;
+    property OilCanisterCount: LongInt read GetOilCanisterCount;
+    property RemainingProjectileCooldownTicks: LongInt read GetRemainingProjectileCooldownTicks;
+    property RemainingNitroCooldownTicks: LongInt read GetRemainingNitroCooldownTicks;
+    property RemainingOilCooldownTicks: LongInt read GetRemainingOilCooldownTicks;
+    property RemainingNitroTicks: LongInt read GetRemainingNitroTicks;
+    property RemainingOiledTicks: LongInt read GetRemainingOiledTicks;
+    property Durability: Double read GetDurability;
+    property EnginePower: Double read GetEnginePower;
+    property WheelTurn: Double read GetWheelTurn;
+    property NextWaypointX: LongInt read GetNextWaypointX;
+    property NextWaypointY: LongInt read GetNextWaypointY;
+    property IsFinishedTrack: Boolean read GetIsFinishedTrack;
+    constructor Create(const AId: Int64; const AMass: Double; const AX: Double; const AY: Double; 
+      const ASpeedX: Double; const ASpeedY: Double; const AAngle: Double; const AAngularSpeed: Double; 
+      const AWidth: Double; const AHeight: Double; const APlayerId: Int64; const ATeammateIndex: LongInt;
+      const AIsTeammate: Boolean; const ACarType: TCarType; const AProjectileCount: LongInt; 
+      const ANitroChargeCount: LongInt; const AOilCanisterCount: LongInt; 
+      const ARemainingProjectileCooldownTicks: LongInt; const ARemainingNitroCooldownTicks: LongInt; 
+      const ARemainingOilCooldownTicks: LongInt; const ARemainingNitroTicks: LongInt;
+      const ARemainingOiledTicks: LongInt; const ADurability: Double; const AEnginePower: Double; 
+      const AWheelTurn: Double; const ANextWaypointX: LongInt; const ANextWaypointY: LongInt; 
+      const AIsFinishedTrack: Boolean);
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-                angularSpeed: Double; width: Double; height: Double; playerId: Int64; teammateIndex: LongInt;
-                teammate: Boolean; carType: TCarType; projectileCount: LongInt; nitroChargeCount: LongInt;
-                oilCanisterCount: LongInt; remainingProjectileCooldownTicks: LongInt;
-                remainingNitroCooldownTicks: LongInt; remainingOilCooldownTicks: LongInt; remainingNitroTicks: LongInt;
-                remainingOiledTicks: LongInt; durability: Double; enginePower: Double; wheelTurn: Double;
-                nextWaypointX: LongInt; nextWaypointY: LongInt; finishedTrack: Boolean);
-
-        function GetPlayerId: Int64;
-        function GetTeammateIndex: LongInt;
-        function GetTeammate: Boolean;
-        function GetType: TCarType;
-        function GetProjectileCount: LongInt;
-        function GetNitroChargeCount: LongInt;
-        function GetOilCanisterCount: LongInt;
-        function GetRemainingProjectileCooldownTicks: LongInt;
-        function GetRemainingNitroCooldownTicks: LongInt;
-        function GetRemainingOilCooldownTicks: LongInt;
-        function GetRemainingNitroTicks: LongInt;
-        function GetRemainingOiledTicks: LongInt;
-        function GetDurability: Double;
-        function GetEnginePower: Double;
-        function GetWheelTurn: Double;
-        function GetNextWaypointX: LongInt;
-        function GetNextWaypointY: LongInt;
-        function GetFinishedTrack: Boolean;
-
-        destructor Destroy; override;
-
-    end;
-
-    TCarArray = array of TCar;
+  TCarArray = array of TCar;
 
 implementation
 
-constructor TCar.Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-        angularSpeed: Double; width: Double; height: Double; playerId: Int64; teammateIndex: LongInt; teammate: Boolean;
-        carType: TCarType; projectileCount: LongInt; nitroChargeCount: LongInt; oilCanisterCount: LongInt;
-        remainingProjectileCooldownTicks: LongInt; remainingNitroCooldownTicks: LongInt;
-        remainingOilCooldownTicks: LongInt; remainingNitroTicks: LongInt; remainingOiledTicks: LongInt;
-        durability: Double; enginePower: Double; wheelTurn: Double; nextWaypointX: LongInt; nextWaypointY: LongInt;
-        finishedTrack: Boolean);
-begin
-    inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height);
-
-    FPlayerId := playerId;
-    FTeammateIndex := teammateIndex;
-    FTeammate := teammate;
-    FType := carType;
-    FProjectileCount := projectileCount;
-    FNitroChargeCount := nitroChargeCount;
-    FOilCanisterCount := oilCanisterCount;
-    FRemainingProjectileCooldownTicks := remainingProjectileCooldownTicks;
-    FRemainingNitroCooldownTicks := remainingNitroCooldownTicks;
-    FRemainingOilCooldownTicks := remainingOilCooldownTicks;
-    FRemainingNitroTicks := remainingNitroTicks;
-    FRemainingOiledTicks := remainingOiledTicks;
-    FDurability := durability;
-    FEnginePower := enginePower;
-    FWheelTurn := wheelTurn;
-    FNextWaypointX := nextWaypointX;
-    FNextWaypointY := nextWaypointY;
-    FFinishedTrack := finishedTrack;
-end;
-
 function TCar.GetPlayerId: Int64;
 begin
-    result := FPlayerId;
+  Result := FPlayerId;
 end;
 
 function TCar.GetTeammateIndex: LongInt;
 begin
-    result := FTeammateIndex;
+  Result := FTeammateIndex;
 end;
 
-function TCar.GetTeammate: Boolean;
+function TCar.GetIsTeammate: Boolean;
 begin
-    result := FTeammate;
+  Result := FIsTeammate;
 end;
 
-function TCar.GetType: TCarType;
+function TCar.GetCarType: TCarType;
 begin
-    result := FType;
+  Result := FCarType;
 end;
 
 function TCar.GetProjectileCount: LongInt;
 begin
-    result := FProjectileCount;
+  Result := FProjectileCount;
 end;
 
 function TCar.GetNitroChargeCount: LongInt;
 begin
-    result := FNitroChargeCount;
+  Result := FNitroChargeCount;
 end;
 
 function TCar.GetOilCanisterCount: LongInt;
 begin
-    result := FOilCanisterCount;
+  Result := FOilCanisterCount;
 end;
 
 function TCar.GetRemainingProjectileCooldownTicks: LongInt;
 begin
-    result := FRemainingProjectileCooldownTicks;
+  Result := FRemainingProjectileCooldownTicks;
 end;
 
 function TCar.GetRemainingNitroCooldownTicks: LongInt;
 begin
-    result := FRemainingNitroCooldownTicks;
+  Result := FRemainingNitroCooldownTicks;
 end;
 
 function TCar.GetRemainingOilCooldownTicks: LongInt;
 begin
-    result := FRemainingOilCooldownTicks;
+  Result := FRemainingOilCooldownTicks;
 end;
 
 function TCar.GetRemainingNitroTicks: LongInt;
 begin
-    result := FRemainingNitroTicks;
+  Result := FRemainingNitroTicks;
 end;
 
 function TCar.GetRemainingOiledTicks: LongInt;
 begin
-    result := FRemainingOiledTicks;
+  Result := FRemainingOiledTicks;
 end;
 
 function TCar.GetDurability: Double;
 begin
-    result := FDurability;
+  Result := FDurability;
 end;
 
 function TCar.GetEnginePower: Double;
 begin
-    result := FEnginePower;
+  Result := FEnginePower;
 end;
 
 function TCar.GetWheelTurn: Double;
 begin
-    result := FWheelTurn;
+  Result := FWheelTurn;
 end;
 
 function TCar.GetNextWaypointX: LongInt;
 begin
-    result := FNextWaypointX;
+  Result := FNextWaypointX;
 end;
 
 function TCar.GetNextWaypointY: LongInt;
 begin
-    result := FNextWaypointY;
+  Result := FNextWaypointY;
 end;
 
-function TCar.GetFinishedTrack: Boolean;
+function TCar.GetIsFinishedTrack: Boolean;
 begin
-    result := FFinishedTrack;
+  Result := FIsFinishedTrack;
+end;
+
+constructor TCar.Create(const AId: Int64; const AMass: Double; const AX: Double; const AY: Double; 
+  const ASpeedX: Double; const ASpeedY: Double; const AAngle: Double; const AAngularSpeed: Double; 
+  const AWidth: Double; const AHeight: Double; const APlayerId: Int64; const ATeammateIndex: LongInt;
+  const AIsTeammate: Boolean; const ACarType: TCarType; const AProjectileCount: LongInt; 
+  const ANitroChargeCount: LongInt; const AOilCanisterCount: LongInt; 
+  const ARemainingProjectileCooldownTicks: LongInt; const ARemainingNitroCooldownTicks: LongInt; 
+  const ARemainingOilCooldownTicks: LongInt; const ARemainingNitroTicks: LongInt;
+  const ARemainingOiledTicks: LongInt; const ADurability: Double; const AEnginePower: Double; 
+  const AWheelTurn: Double; const ANextWaypointX: LongInt; const ANextWaypointY: LongInt; 
+  const AIsFinishedTrack: Boolean);
+begin
+  inherited Create(AId, AMass, AX, AY, ASpeedX, ASpeedY, AAngle, AAngularSpeed, AWidth, AHeight);
+  FPlayerId := APlayerId;
+  FTeammateIndex := ATeammateIndex;
+  FIsTeammate := AIsTeammate;
+  FCarType := ACarType;
+  FProjectileCount := AprojectileCount;
+  FNitroChargeCount := ANitroChargeCount;
+  FOilCanisterCount := AOilCanisterCount;
+  FRemainingProjectileCooldownTicks := ARemainingProjectileCooldownTicks;
+  FRemainingNitroCooldownTicks := ARemainingNitroCooldownTicks;
+  FRemainingOilCooldownTicks := ARemainingOilCooldownTicks;
+  FRemainingNitroTicks := ARemainingNitroTicks;
+  FRemainingOiledTicks := ARemainingOiledTicks;
+  FDurability := ADurability;
+  FEnginePower := AEnginePower;
+  FWheelTurn := AWheelTurn;
+  FNextWaypointX := ANextWaypointX;
+  FNextWaypointY := ANextWaypointY;
+  FIsFinishedTrack := AIsFinishedTrack;
 end;
 
 destructor TCar.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.

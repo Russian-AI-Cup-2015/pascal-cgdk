@@ -3,167 +3,156 @@ unit RemoteProcessClient;
 interface
 
 uses
-    SysUtils, SimpleSocket, PlayerContextControl, BonusControl, BonusTypeControl, CarControl, CarTypeControl,
-    DirectionControl, GameControl, MoveControl, OilSlickControl, PlayerControl, ProjectileControl,
-    ProjectileTypeControl, TileTypeControl, TypeControl, WorldControl;
+  SysUtils, SimpleSocket, PlayerContextControl, BonusControl, BonusTypeControl, CarControl, CarTypeControl,
+  DirectionControl, GameControl, MoveControl, OilSlickControl, PlayerControl, ProjectileControl,
+  ProjectileTypeControl, TileTypeControl, TypeControl, WorldControl;
 
 const
-    UNKNOWN_MESSAGE:        LongInt = 0;
-    GAME_OVER:              LongInt = 1;
-    AUTHENTICATION_TOKEN:   LongInt = 2;
-    TEAM_SIZE:              LongInt = 3;
-    PROTOCOL_VERSION:       LongInt = 4;
-    GAME_CONTEXT:           LongInt = 5;
-    PLAYER_CONTEXT:         LongInt = 6;
-    MOVES_MESSAGE:          LongInt = 7;
+  UNKNOWN_MESSAGE:        LongInt = 0;
+  GAME_OVER:              LongInt = 1;
+  AUTHENTICATION_TOKEN:   LongInt = 2;
+  TEAM_SIZE:              LongInt = 3;
+  PROTOCOL_VERSION:       LongInt = 4;
+  GAME_CONTEXT:           LongInt = 5;
+  PLAYER_CONTEXT:         LongInt = 6;
+  MOVES_MESSAGE:          LongInt = 7;
 
-    LITTLE_ENDIAN_BYTE_ORDER = true;
-    INTEGER_SIZE_BYTES = sizeof(LongInt);
-    LONG_SIZE_BYTES = sizeof(Int64);
+  LITTLE_ENDIAN_BYTE_ORDER = true;
+  INTEGER_SIZE_BYTES = sizeof(LongInt);
+  LONG_SIZE_BYTES = sizeof(Int64);
 
 type
-    TMessageType = LongInt;
+  TMessageType = LongInt;
 
-    TByteArray = array of Byte;
+  TByteArray = array of Byte;
 
-    TRemoteProcessClient = class
-    private
-        FSocket: ClientSocket;
-        
-        FMapName: String;
-        FTilesXY: TTileTypeArray2D;
-        FWaypoints: TLongIntArray2D;
-        FStartingDirection: TDirection;
-
-        {$HINTS OFF}
-        function ReadBonus: TBonus;
-        procedure WriteBonus(bonus: TBonus);
-        function ReadBonuses: TBonusArray;
-        procedure WriteBonuses(bonuses: TBonusArray);
-        function ReadCar: TCar;
-        procedure WriteCar(car: TCar);
-        function ReadCars: TCarArray;
-        procedure WriteCars(cars: TCarArray);
-        function ReadGame: TGame;
-        procedure WriteGame(game: TGame);
-        function ReadGames: TGameArray;
-        procedure WriteGames(games: TGameArray);
-        function ReadMove: TMove;
-        procedure WriteMove(move: TMove);
-        function ReadMoves: TMoveArray;
-        procedure WriteMoves(moves: TMoveArray);
-        function ReadOilSlick: TOilSlick;
-        procedure WriteOilSlick(oilSlick: TOilSlick);
-        function ReadOilSlicks: TOilSlickArray;
-        procedure WriteOilSlicks(oilSlicks: TOilSlickArray);
-        function ReadPlayer: TPlayer;
-        procedure WritePlayer(player: TPlayer);
-        function ReadPlayers: TPlayerArray;
-        procedure WritePlayers(players: TPlayerArray);
-        function ReadPlayerContext: TPlayerContext;
-        procedure WritePlayerContext(playerContext: TPlayerContext);
-        function ReadPlayerContexts: TPlayerContextArray;
-        procedure WritePlayerContexts(playerContexts: TPlayerContextArray);
-        function ReadProjectile: TProjectile;
-        procedure WriteProjectile(projectile: TProjectile);
-        function ReadProjectiles: TProjectileArray;
-        procedure WriteProjectiles(projectiles: TProjectileArray);
-        function ReadWorld: TWorld;
-        procedure WriteWorld(world: TWorld);
-        function ReadWorlds: TWorldArray;
-        procedure WriteWorlds(worlds: TWorldArray);
-        {$HINTS ON}
-
-        procedure EnsureMessageType(actualType: LongInt; expectedType: LongInt);
-
-        function ReadEnum: LongInt;
-        function ReadEnumArray: TLongIntArray;
-        function ReadEnumArray2D: TLongIntArray2D;
-        procedure WriteEnum(value: LongInt);
-        procedure WriteEnumArray(value: TLongIntArray);
-        procedure WriteEnumArray2D(value: TLongIntArray2D);
-
-        function ReadString: String;
-        procedure WriteString(value: String);
-
-        function ReadInt: LongInt;
-        function ReadIntArray: TLongIntArray;
-        function ReadIntArray2D: TLongIntArray2D;
-        procedure WriteInt(value: LongInt);
-        procedure WriteIntArray(value: TLongIntArray);
-        procedure WriteIntArray2D(value: TLongIntArray2D);
-
-        function ReadBytes(byteCount: LongInt): TByteArray;
-        procedure WriteBytes(bytes: TByteArray);
-
-        function ReadBoolean: Boolean;
-        procedure WriteBoolean(value: Boolean);
-
-        function ReadDouble: Double;
-        procedure WriteDouble(value: Double);
-
-        function ReadLong: Int64;
-        procedure WriteLong(value: Int64);
-
-        function IsLittleEndianMachine: Boolean;
-
-        procedure Reverse(var bytes: TByteArray);
-
-    public
-        constructor Create(host: String; port: LongInt);
-
-        procedure WriteTokenMessage(token: String);
-        function ReadTeamSizeMessage: LongInt;
-        procedure WriteProtocolVersionMessage;
-        function ReadGameContextMessage: TGame;
-        function ReadPlayerContextMessage: TPlayerContext;
-        procedure WriteMovesMessage(moves: TMoveArray);
-
-        destructor Destroy; override;
-
-end;
+  TRemoteProcessClient = class
+  private
+    FSocket: ClientSocket;
+    FMapName: string;
+    FTilesXY: TTileTypeArray2D;
+    FWaypoints: TLongIntArray2D;
+    FStartingDirection: TDirection;
+    {$HINTS OFF}
+    function ReadBonus: TBonus;
+    procedure WriteBonus(bonus: TBonus);
+    function ReadBonuses: TBonusArray;
+    procedure WriteBonuses(bonuses: TBonusArray);
+    function ReadCar: TCar;
+    procedure WriteCar(car: TCar);
+    function ReadCars: TCarArray;
+    procedure WriteCars(cars: TCarArray);
+    function ReadGame: TGame;
+    procedure WriteGame(game: TGame);
+    function ReadGames: TGameArray;
+    procedure WriteGames(games: TGameArray);
+    function ReadMove: TMove;
+    procedure WriteMove(move: TMove);
+    function ReadMoves: TMoveArray;
+    procedure WriteMoves(moves: TMoveArray);
+    function ReadOilSlick: TOilSlick;
+    procedure WriteOilSlick(oilSlick: TOilSlick);
+    function ReadOilSlicks: TOilSlickArray;
+    procedure WriteOilSlicks(oilSlicks: TOilSlickArray);
+    function ReadPlayer: TPlayer;
+    procedure WritePlayer(player: TPlayer);
+    function ReadPlayers: TPlayerArray;
+    procedure WritePlayers(players: TPlayerArray);
+    function ReadPlayerContext: TPlayerContext;
+    procedure WritePlayerContext(playerContext: TPlayerContext);
+    function ReadPlayerContexts: TPlayerContextArray;
+    procedure WritePlayerContexts(playerContexts: TPlayerContextArray);
+    function ReadProjectile: TProjectile;
+    procedure WriteProjectile(projectile: TProjectile);
+    function ReadProjectiles: TProjectileArray;
+    procedure WriteProjectiles(projectiles: TProjectileArray);
+    function ReadWorld: TWorld;
+    procedure WriteWorld(world: TWorld);
+    function ReadWorlds: TWorldArray;
+    procedure WriteWorlds(worlds: TWorldArray);
+    {$HINTS ON}
+    procedure EnsureMessageType(actualType: LongInt; expectedType: LongInt);
+    function ReadEnum: LongInt;
+    function ReadEnumArray: TLongIntArray;
+    function ReadEnumArray2D: TLongIntArray2D;
+    procedure WriteEnum(value: LongInt);
+    procedure WriteEnumArray(value: TLongIntArray);
+    procedure WriteEnumArray2D(value: TLongIntArray2D);
+    function ReadString: string;
+    procedure WriteString(value: string);
+    function ReadInt: LongInt;
+    function ReadIntArray: TLongIntArray;
+    function ReadIntArray2D: TLongIntArray2D;
+    procedure WriteInt(value: LongInt);
+    procedure WriteIntArray(value: TLongIntArray);
+    procedure WriteIntArray2D(value: TLongIntArray2D);
+    function ReadBytes(byteCount: LongInt): TByteArray;
+    procedure WriteBytes(bytes: TByteArray);
+    function ReadBoolean: Boolean;
+    procedure WriteBoolean(value: Boolean);
+    function ReadDouble: Double;
+    procedure WriteDouble(value: Double);
+    function ReadLong: Int64;
+    procedure WriteLong(value: Int64);
+    function IsLittleEndianMachine: Boolean;
+    procedure Reverse(var bytes: TByteArray);
+  public
+    constructor Create(const AHost: string; const APort: LongInt);
+    destructor Destroy; override;
+    procedure WriteTokenMessage(token: string);
+    function ReadTeamSizeMessage: LongInt;
+    procedure WriteProtocolVersionMessage;
+    function ReadGameContextMessage: TGame;
+    function ReadPlayerContextMessage: TPlayerContext;
+    procedure WriteMovesMessage(moves: TMoveArray);
+  end;
 
 implementation
 
-constructor TRemoteProcessClient.Create(host: String; port: LongInt);
+constructor TRemoteProcessClient.Create(const AHost: string; const APort: LongInt);
 begin
-    FSocket := ClientSocket.Create(host, port);
+  FSocket := ClientSocket.Create(AHost, APort);
+  FMapName := '';
+  FTilesXY := nil;
+  FWaypoints := nil;
+  FStartingDirection := _DIRECTION_COUNT_;
+end;
 
-    FMapName := '';
-    FTilesXY := nil;
-    FWaypoints := nil;
-    FStartingDirection := _DIRECTION_COUNT_;
+destructor TRemoteProcessClient.Destroy;
+begin
+  FSocket.Free;
 end;
 
 procedure TRemoteProcessClient.EnsureMessageType(actualType: LongInt; expectedType: LongInt);
 begin
-    if (actualType <> expectedType) then begin
-        HALT(10001);
-    end;
+  if (actualType <> expectedType) then 
+  begin
+    Halt(10001);
+  end;
 end;
 
-procedure TRemoteProcessClient.WriteTokenMessage(token: String);
+procedure TRemoteProcessClient.WriteTokenMessage(token: string);
 begin
-    WriteEnum(AUTHENTICATION_TOKEN);
-    WriteString(token);
+  WriteEnum(AUTHENTICATION_TOKEN);
+  WriteString(token);
 end;
 
 function TRemoteProcessClient.ReadTeamSizeMessage: LongInt;
 begin
-    EnsureMessageType(ReadEnum, TEAM_SIZE);
-    result := ReadInt;
+  EnsureMessageType(ReadEnum, TEAM_SIZE);
+  Result := ReadInt;
 end;
 
 procedure TRemoteProcessClient.WriteProtocolVersionMessage;
 begin
-    WriteEnum(PROTOCOL_VERSION);
-    WriteInt(1);
+  WriteEnum(PROTOCOL_VERSION);
+  WriteInt(1);
 end;
 
 function TRemoteProcessClient.ReadGameContextMessage: TGame;
 begin
-    EnsureMessageType(ReadEnum, GAME_CONTEXT);
-    result := ReadGame;
+  EnsureMessageType(ReadEnum, GAME_CONTEXT);
+  Result := ReadGame;
 end;
 
 function TRemoteProcessClient.ReadPlayerContextMessage: TPlayerContext;
@@ -202,46 +191,44 @@ var
     bonusType: TBonusType;
 
 begin
-    if not ReadBoolean then begin
-        result := nil;
-        exit;
-    end;
-
-    id := ReadLong;
-    mass := ReadDouble;
-    x := ReadDouble;
-    y := ReadDouble;
-    speedX := ReadDouble;
-    speedY := ReadDouble;
-    angle := ReadDouble;
-    angularSpeed := ReadDouble;
-    width := ReadDouble;
-    height := ReadDouble;
-    bonusType := ReadEnum;
-
-    result := TBonus.Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height, bonusType);
+  if not ReadBoolean then 
+  begin
+    Result := nil;
+    Exit;
+  end;
+  id := ReadLong;
+  mass := ReadDouble;
+  x := ReadDouble;
+  y := ReadDouble;
+  speedX := ReadDouble;
+  speedY := ReadDouble;
+  angle := ReadDouble;
+  angularSpeed := ReadDouble;
+  width := ReadDouble;
+  height := ReadDouble;
+  bonusType := ReadEnum;
+  Result := TBonus.Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height, bonusType);
 end;
 
 procedure TRemoteProcessClient.WriteBonus(bonus: TBonus);
 begin
-    if bonus = nil then begin
-        WriteBoolean(false);
-        exit;
-    end;
-
-    WriteBoolean(true);
-
-    WriteLong(bonus.GetId);
-    WriteDouble(bonus.GetMass);
-    WriteDouble(bonus.GetX);
-    WriteDouble(bonus.GetY);
-    WriteDouble(bonus.GetSpeedX);
-    WriteDouble(bonus.GetSpeedY);
-    WriteDouble(bonus.GetAngle);
-    WriteDouble(bonus.GetAngularSpeed);
-    WriteDouble(bonus.GetWidth);
-    WriteDouble(bonus.GetHeight);
-    WriteEnum(bonus.GetType);
+  if not Assigned(bonus) then 
+  begin
+    WriteBoolean(False);
+    Exit;
+  end;
+  WriteBoolean(True);
+  WriteLong(bonus.Id);
+  WriteDouble(bonus.Mass);
+  WriteDouble(bonus.X);
+  WriteDouble(bonus.Y);
+  WriteDouble(bonus.SpeedX);
+  WriteDouble(bonus.SpeedY);
+  WriteDouble(bonus.Angle);
+  WriteDouble(bonus.AngularSpeed);
+  WriteDouble(bonus.Width);
+  WriteDouble(bonus.Height);
+  WriteEnum(bonus.BonusType);
 end;
 
 function TRemoteProcessClient.ReadBonuses: TBonusArray;
@@ -363,34 +350,34 @@ begin
 
     WriteBoolean(true);
 
-    WriteLong(car.GetId);
-    WriteDouble(car.GetMass);
-    WriteDouble(car.GetX);
-    WriteDouble(car.GetY);
-    WriteDouble(car.GetSpeedX);
-    WriteDouble(car.GetSpeedY);
-    WriteDouble(car.GetAngle);
-    WriteDouble(car.GetAngularSpeed);
-    WriteDouble(car.GetWidth);
-    WriteDouble(car.GetHeight);
-    WriteLong(car.GetPlayerId);
-    WriteInt(car.GetTeammateIndex);
-    WriteBoolean(car.GetTeammate);
-    WriteEnum(car.GetType);
-    WriteInt(car.GetProjectileCount);
-    WriteInt(car.GetNitroChargeCount);
-    WriteInt(car.GetOilCanisterCount);
-    WriteInt(car.GetRemainingProjectileCooldownTicks);
-    WriteInt(car.GetRemainingNitroCooldownTicks);
-    WriteInt(car.GetRemainingOilCooldownTicks);
-    WriteInt(car.GetRemainingNitroTicks);
-    WriteInt(car.GetRemainingOiledTicks);
-    WriteDouble(car.GetDurability);
-    WriteDouble(car.GetEnginePower);
-    WriteDouble(car.GetWheelTurn);
-    WriteInt(car.GetNextWaypointX);
-    WriteInt(car.GetNextWaypointY);
-    WriteBoolean(car.GetFinishedTrack);
+    WriteLong(car.Id);
+    WriteDouble(car.Mass);
+    WriteDouble(car.X);
+    WriteDouble(car.Y);
+    WriteDouble(car.SpeedX);
+    WriteDouble(car.SpeedY);
+    WriteDouble(car.Angle);
+    WriteDouble(car.AngularSpeed);
+    WriteDouble(car.Width);
+    WriteDouble(car.Height);
+    WriteLong(car.PlayerId);
+    WriteInt(car.TeammateIndex);
+    WriteBoolean(car.IsTeammate);
+    WriteEnum(car.CarType);
+    WriteInt(car.ProjectileCount);
+    WriteInt(car.NitroChargeCount);
+    WriteInt(car.OilCanisterCount);
+    WriteInt(car.RemainingProjectileCooldownTicks);
+    WriteInt(car.RemainingNitroCooldownTicks);
+    WriteInt(car.RemainingOilCooldownTicks);
+    WriteInt(car.RemainingNitroTicks);
+    WriteInt(car.RemainingOiledTicks);
+    WriteDouble(car.Durability);
+    WriteDouble(car.EnginePower);
+    WriteDouble(car.WheelTurn);
+    WriteInt(car.NextWaypointX);
+    WriteInt(car.NextWaypointY);
+    WriteBoolean(car.IsFinishedTrack);
 end;
 
 function TRemoteProcessClient.ReadCars: TCarArray;
@@ -571,60 +558,60 @@ begin
 
     WriteBoolean(true);
 
-    WriteLong(game.GetRandomSeed);
-    WriteInt(game.GetTickCount);
-    WriteInt(game.GetWorldWidth);
-    WriteInt(game.GetWorldHeight);
-    WriteDouble(game.GetTrackTileSize);
-    WriteDouble(game.GetTrackTileMargin);
-    WriteInt(game.GetLapCount);
-    WriteInt(game.GetLapTickCount);
-    WriteInt(game.GetInitialFreezeDurationTicks);
-    WriteDouble(game.GetBurningTimeDurationFactor);
-    WriteIntArray(game.GetFinishTrackScores);
-    WriteInt(game.GetFinishLapScore);
-    WriteDouble(game.GetLapWaypointsSummaryScoreFactor);
-    WriteDouble(game.GetCarDamageScoreFactor);
-    WriteInt(game.GetCarEliminationScore);
-    WriteDouble(game.GetCarWidth);
-    WriteDouble(game.GetCarHeight);
-    WriteDouble(game.GetCarEnginePowerChangePerTick);
-    WriteDouble(game.GetCarWheelTurnChangePerTick);
-    WriteDouble(game.GetCarAngularSpeedFactor);
-    WriteDouble(game.GetCarMovementAirFrictionFactor);
-    WriteDouble(game.GetCarRotationAirFrictionFactor);
-    WriteDouble(game.GetCarLengthwiseMovementFrictionFactor);
-    WriteDouble(game.GetCarCrosswiseMovementFrictionFactor);
-    WriteDouble(game.GetCarRotationFrictionFactor);
-    WriteInt(game.GetThrowProjectileCooldownTicks);
-    WriteInt(game.GetUseNitroCooldownTicks);
-    WriteInt(game.GetSpillOilCooldownTicks);
-    WriteDouble(game.GetNitroEnginePowerFactor);
-    WriteInt(game.GetNitroDurationTicks);
-    WriteInt(game.GetCarReactivationTimeTicks);
-    WriteDouble(game.GetBuggyMass);
-    WriteDouble(game.GetBuggyEngineForwardPower);
-    WriteDouble(game.GetBuggyEngineRearPower);
-    WriteDouble(game.GetJeepMass);
-    WriteDouble(game.GetJeepEngineForwardPower);
-    WriteDouble(game.GetJeepEngineRearPower);
-    WriteDouble(game.GetBonusSize);
-    WriteDouble(game.GetBonusMass);
-    WriteInt(game.GetPureScoreAmount);
-    WriteDouble(game.GetWasherRadius);
-    WriteDouble(game.GetWasherMass);
-    WriteDouble(game.GetWasherInitialSpeed);
-    WriteDouble(game.GetWasherDamage);
-    WriteDouble(game.GetSideWasherAngle);
-    WriteDouble(game.GetTireRadius);
-    WriteDouble(game.GetTireMass);
-    WriteDouble(game.GetTireInitialSpeed);
-    WriteDouble(game.GetTireDamageFactor);
-    WriteDouble(game.GetTireDisappearSpeedFactor);
-    WriteDouble(game.GetOilSlickInitialRange);
-    WriteDouble(game.GetOilSlickRadius);
-    WriteInt(game.GetOilSlickLifetime);
-    WriteInt(game.GetMaxOiledStateDurationTicks);
+    WriteLong(game.RandomSeed);
+    WriteInt(game.TickCount);
+    WriteInt(game.WorldWidth);
+    WriteInt(game.WorldHeight);
+    WriteDouble(game.TrackTileSize);
+    WriteDouble(game.TrackTileMargin);
+    WriteInt(game.LapCount);
+    WriteInt(game.LapTickCount);
+    WriteInt(game.InitialFreezeDurationTicks);
+    WriteDouble(game.BurningTimeDurationFactor);
+    WriteIntArray(game.FinishTrackScores);
+    WriteInt(game.FinishLapScore);
+    WriteDouble(game.LapWaypointsSummaryScoreFactor);
+    WriteDouble(game.CarDamageScoreFactor);
+    WriteInt(game.CarEliminationScore);
+    WriteDouble(game.CarWidth);
+    WriteDouble(game.CarHeight);
+    WriteDouble(game.CarEnginePowerChangePerTick);
+    WriteDouble(game.CarWheelTurnChangePerTick);
+    WriteDouble(game.CarAngularSpeedFactor);
+    WriteDouble(game.CarMovementAirFrictionFactor);
+    WriteDouble(game.CarRotationAirFrictionFactor);
+    WriteDouble(game.CarLengthwiseMovementFrictionFactor);
+    WriteDouble(game.CarCrosswiseMovementFrictionFactor);
+    WriteDouble(game.CarRotationFrictionFactor);
+    WriteInt(game.ThrowProjectileCooldownTicks);
+    WriteInt(game.UseNitroCooldownTicks);
+    WriteInt(game.SpillOilCooldownTicks);
+    WriteDouble(game.NitroEnginePowerFactor);
+    WriteInt(game.NitroDurationTicks);
+    WriteInt(game.CarReactivationTimeTicks);
+    WriteDouble(game.BuggyMass);
+    WriteDouble(game.BuggyEngineForwardPower);
+    WriteDouble(game.BuggyEngineRearPower);
+    WriteDouble(game.JeepMass);
+    WriteDouble(game.JeepEngineForwardPower);
+    WriteDouble(game.JeepEngineRearPower);
+    WriteDouble(game.BonusSize);
+    WriteDouble(game.BonusMass);
+    WriteInt(game.PureScoreAmount);
+    WriteDouble(game.WasherRadius);
+    WriteDouble(game.WasherMass);
+    WriteDouble(game.WasherInitialSpeed);
+    WriteDouble(game.WasherDamage);
+    WriteDouble(game.SideWasherAngle);
+    WriteDouble(game.TireRadius);
+    WriteDouble(game.TireMass);
+    WriteDouble(game.TireInitialSpeed);
+    WriteDouble(game.TireDamageFactor);
+    WriteDouble(game.TireDisappearSpeedFactor);
+    WriteDouble(game.OilSlickInitialRange);
+    WriteDouble(game.OilSlickRadius);
+    WriteInt(game.OilSlickLifetime);
+    WriteInt(game.MaxOiledStateDurationTicks);
 end;
 
 function TRemoteProcessClient.ReadGames: TGameArray;
@@ -667,36 +654,34 @@ end;
 
 function TRemoteProcessClient.ReadMove: TMove;
 begin
-    if not ReadBoolean then begin
-        result := nil;
-        exit;
-    end;
-
-    result := TMove.Create;
-
-    result.SetEnginePower(ReadDouble);
-    result.SetBrake(ReadBoolean);
-    result.SetWheelTurn(ReadDouble);
-    result.SetThrowProjectile(ReadBoolean);
-    result.SetUseNitro(ReadBoolean);
-    result.SetSpillOil(ReadBoolean);
+  if not ReadBoolean then 
+  begin
+    Result := nil;
+    Exit;
+  end;
+  Result := TMove.Create;
+  Result.EnginePower := ReadDouble;
+  Result.IsBrake := ReadBoolean;
+  Result.WheelTurn := ReadDouble;
+  Result.IsThrowProjectile := ReadBoolean;
+  Result.IsUseNitro := ReadBoolean;
+  Result.IsSpillOil := ReadBoolean;
 end;
 
 procedure TRemoteProcessClient.WriteMove(move: TMove);
 begin
-    if move = nil then begin
-        WriteBoolean(false);
-        exit;
-    end;
-
-    WriteBoolean(true);
-
-    WriteDouble(move.GetEnginePower);
-    WriteBoolean(move.GetBrake);
-    WriteDouble(move.GetWheelTurn);
-    WriteBoolean(move.GetThrowProjectile);
-    WriteBoolean(move.GetUseNitro);
-    WriteBoolean(move.GetSpillOil);
+  if not Assigned(move) then 
+  begin
+    WriteBoolean(False);
+    Exit;
+  end;
+  WriteBoolean(True);
+  WriteDouble(move.EnginePower);
+  WriteBoolean(move.IsBrake);
+  WriteDouble(move.WheelTurn);
+  WriteBoolean(move.IsThrowProjectile);
+  WriteBoolean(move.IsUseNitro);
+  WriteBoolean(move.IsSpillOil);
 end;
 
 function TRemoteProcessClient.ReadMoves: TMoveArray;
@@ -779,16 +764,16 @@ begin
 
     WriteBoolean(true);
 
-    WriteLong(oilSlick.GetId);
-    WriteDouble(oilSlick.GetMass);
-    WriteDouble(oilSlick.GetX);
-    WriteDouble(oilSlick.GetY);
-    WriteDouble(oilSlick.GetSpeedX);
-    WriteDouble(oilSlick.GetSpeedY);
-    WriteDouble(oilSlick.GetAngle);
-    WriteDouble(oilSlick.GetAngularSpeed);
-    WriteDouble(oilSlick.GetRadius);
-    WriteInt(oilSlick.GetRemainingLifetime);
+    WriteLong(oilSlick.Id);
+    WriteDouble(oilSlick.Mass);
+    WriteDouble(oilSlick.X);
+    WriteDouble(oilSlick.Y);
+    WriteDouble(oilSlick.SpeedX);
+    WriteDouble(oilSlick.SpeedY);
+    WriteDouble(oilSlick.Angle);
+    WriteDouble(oilSlick.AngularSpeed);
+    WriteDouble(oilSlick.Radius);
+    WriteInt(oilSlick.RemainingLifetime);
 end;
 
 function TRemoteProcessClient.ReadOilSlicks: TOilSlickArray;
@@ -861,11 +846,11 @@ begin
 
     WriteBoolean(true);
 
-    WriteLong(player.GetId);
-    WriteBoolean(player.GetMe);
-    WriteString(player.GetName);
-    WriteBoolean(player.GetStrategyCrashed);
-    WriteInt(player.GetScore);
+    WriteLong(player.Id);
+    WriteBoolean(player.IsMe);
+    WriteString(player.Name);
+    WriteBoolean(player.StrategyCrashed);
+    WriteInt(player.Score);
 end;
 
 function TRemoteProcessClient.ReadPlayers: TPlayerArray;
@@ -925,34 +910,35 @@ end;
 
 procedure TRemoteProcessClient.WritePlayerContext(playerContext: TPlayerContext);
 begin
-    if playerContext = nil then begin
-        WriteBoolean(false);
-        exit;
-    end;
-
-    WriteBoolean(true);
-
-    WriteCars(playerContext.GetCars);
-    WriteWorld(playerContext.GetWorld);
+  if not Assigned(playerContext) then 
+  begin
+    WriteBoolean(False);
+    Exit;
+  end;
+  WriteBoolean(True);
+  WriteCars(playerContext.Cars);
+  WriteWorld(playerContext.World);
 end;
 
 function TRemoteProcessClient.ReadPlayerContexts: TPlayerContextArray;
 var
-    playerContextIndex: LongInt;
-    playerContextCount: LongInt;
-
+  playerContextIndex: LongInt;
+  playerContextCount: LongInt;
 begin
-    playerContextCount := ReadInt;
-    if playerContextCount < 0 then begin
-        result := nil;
-        exit;
+  playerContextCount := ReadInt;
+  if playerContextCount < 0 then 
+  begin
+    Result := nil;
+    Exit;
+  end;
+  SetLength(Result, playerContextCount);
+  if playerContextCount > 0 then
+  begin
+    for playerContextIndex := 0 to playerContextCount - 1 do 
+    begin
+      Result[playerContextIndex] := ReadPlayerContext;
     end;
-
-    SetLength(result, playerContextCount);
-
-    for playerContextIndex := 0 to playerContextCount - 1 do begin
-        result[playerContextIndex] := ReadPlayerContext;
-    end;
+  end;
 end;
 
 procedure TRemoteProcessClient.WritePlayerContexts(playerContexts: TPlayerContextArray);
@@ -1014,25 +1000,24 @@ end;
 
 procedure TRemoteProcessClient.WriteProjectile(projectile: TProjectile);
 begin
-    if projectile = nil then begin
-        WriteBoolean(false);
-        exit;
-    end;
-
-    WriteBoolean(true);
-
-    WriteLong(projectile.GetId);
-    WriteDouble(projectile.GetMass);
-    WriteDouble(projectile.GetX);
-    WriteDouble(projectile.GetY);
-    WriteDouble(projectile.GetSpeedX);
-    WriteDouble(projectile.GetSpeedY);
-    WriteDouble(projectile.GetAngle);
-    WriteDouble(projectile.GetAngularSpeed);
-    WriteDouble(projectile.GetRadius);
-    WriteLong(projectile.GetCarId);
-    WriteLong(projectile.GetPlayerId);
-    WriteEnum(projectile.GetType);
+  if not Assigned(projectile) then 
+  begin
+    WriteBoolean(False);
+    Exit;
+  end;
+  WriteBoolean(True);
+  WriteLong(projectile.Id);
+  WriteDouble(projectile.Mass);
+  WriteDouble(projectile.X);
+  WriteDouble(projectile.Y);
+  WriteDouble(projectile.SpeedX);
+  WriteDouble(projectile.SpeedY);
+  WriteDouble(projectile.Angle);
+  WriteDouble(projectile.AngularSpeed);
+  WriteDouble(projectile.Radius);
+  WriteLong(projectile.CarId);
+  WriteLong(projectile.PlayerId);
+  WriteEnum(projectile.ProjectileType);
 end;
 
 function TRemoteProcessClient.ReadProjectiles: TProjectileArray;
@@ -1140,20 +1125,20 @@ begin
 
     WriteBoolean(true);
 
-    WriteInt(world.GetTick);
-    WriteInt(world.GetTickCount);
-    WriteInt(world.GetLastTickIndex);
-    WriteInt(world.GetWidth);
-    WriteInt(world.GetHeight);
-    WritePlayers(world.GetPlayers);
-    WriteCars(world.GetCars);
-    WriteProjectiles(world.GetProjectiles);
-    WriteBonuses(world.GetBonuses);
-    WriteOilSlicks(world.GetOilSlicks);
-    WriteString(world.GetMapName);
-    WriteEnumArray2D(world.GetTilesXY);
-    WriteIntArray2D(world.GetWaypoints);
-    WriteEnum(world.GetStartingDirection);
+    WriteInt(world.Tick);
+    WriteInt(world.TickCount);
+    WriteInt(world.LastTickIndex);
+    WriteInt(world.Width);
+    WriteInt(world.Height);
+    WritePlayers(world.Players);
+    WriteCars(world.Cars);
+    WriteProjectiles(world.Projectiles);
+    WriteBonuses(world.Bonuses);
+    WriteOilSlicks(world.OilSlicks);
+    WriteString(world.MapName);
+    WriteEnumArray2D(world.TilesXY);
+    WriteIntArray2D(world.Waypoints);
+    WriteEnum(world.StartingDirection);
 end;
 
 function TRemoteProcessClient.ReadWorlds: TWorldArray;
@@ -1553,11 +1538,6 @@ begin
         bytes[i] := bytes[len - i - 1];
         bytes[len - i - 1] := buffer;
     end;
-end;
-
-destructor TRemoteProcessClient.Destroy;
-begin
-    FSocket.Free;
 end;
 
 end.

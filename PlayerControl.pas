@@ -3,71 +3,74 @@ unit PlayerControl;
 interface
 
 uses
-    Math, TypeControl;
+  Math, TypeControl;
 
 type
-    TPlayer = class
-    private
-        FId: Int64;
-        FMe: Boolean;
-        FName: String;
-        FStrategyCrashed: Boolean;
-        FScore: LongInt;
+  TPlayer = class
+  private
+    FId: Int64;
+    FIsMe: Boolean;
+    FName: String;
+    FStrategyCrashed: Boolean;
+    FScore: LongInt;
+    function GetId: Int64;
+    function GetIsMe: Boolean;
+    function GetName: string;
+    function GetStrategyCrashed: Boolean;
+    function GetScore: LongInt;
+  public
+    property Id: Int64 read GetId;
+    property IsMe: Boolean read GetIsMe;
+    property Name: string read GetName;
+    property StrategyCrashed: Boolean read GetStrategyCrashed;
+    property Score: LongInt read GetScore;
+    constructor Create(const AId: Int64; const AIsMe: Boolean; const AName: string; 
+      const AStrategyCrashed: Boolean; const AScore: LongInt);
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create(id: Int64; me: Boolean; name: String; strategyCrashed: Boolean; score: LongInt);
-
-        function GetId: Int64;
-        function GetMe: Boolean;
-        function GetName: String;
-        function GetStrategyCrashed: Boolean;
-        function GetScore: LongInt;
-
-        destructor Destroy; override;
-
-    end;
-
-    TPlayerArray = array of TPlayer;
+  TPlayerArray = array of TPlayer;
 
 implementation
 
-constructor TPlayer.Create(id: Int64; me: Boolean; name: String; strategyCrashed: Boolean; score: LongInt);
-begin
-    FId := id;
-    FMe := me;
-    FName := name;
-    FStrategyCrashed := strategyCrashed;
-    FScore := score;
-end;
-
 function TPlayer.GetId: Int64;
 begin
-    result := FId;
+  Result := FId;
 end;
 
-function TPlayer.GetMe: Boolean;
+function TPlayer.GetIsMe: Boolean;
 begin
-    result := FMe;
+  Result := FIsMe;
 end;
 
-function TPlayer.GetName: String;
+function TPlayer.GetName: string;
 begin
-    result := FName;
+  Result := FName;
 end;
 
 function TPlayer.GetStrategyCrashed: Boolean;
 begin
-    result := FStrategyCrashed;
+  Result := FStrategyCrashed;
 end;
 
 function TPlayer.GetScore: LongInt;
 begin
-    result := FScore;
+  Result := FScore;
+end;
+
+constructor TPlayer.Create(const AId: Int64; const AIsMe: Boolean; const AName: string; 
+  const AStrategyCrashed: Boolean; const AScore: LongInt);
+begin
+  FId := AId;
+  FIsMe := AIsMe;
+  FName := AName;
+  FStrategyCrashed := AStrategyCrashed;
+  FScore := AScore;
 end;
 
 destructor TPlayer.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.

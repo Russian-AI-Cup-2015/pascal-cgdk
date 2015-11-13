@@ -3,503 +3,565 @@ unit GameControl;
 interface
 
 uses
-    Math, TypeControl;
+  Math, TypeControl;
 
 type
-    TGame = class
-    private
-        FRandomSeed: Int64;
-        FTickCount: LongInt;
-        FWorldWidth: LongInt;
-        FWorldHeight: LongInt;
-        FTrackTileSize: Double;
-        FTrackTileMargin: Double;
-        FLapCount: LongInt;
-        FLapTickCount: LongInt;
-        FInitialFreezeDurationTicks: LongInt;
-        FBurningTimeDurationFactor: Double;
-        FFinishTrackScores: TLongIntArray;
-        FFinishLapScore: LongInt;
-        FLapWaypointsSummaryScoreFactor: Double;
-        FCarDamageScoreFactor: Double;
-        FCarEliminationScore: LongInt;
-        FCarWidth: Double;
-        FCarHeight: Double;
-        FCarEnginePowerChangePerTick: Double;
-        FCarWheelTurnChangePerTick: Double;
-        FCarAngularSpeedFactor: Double;
-        FCarMovementAirFrictionFactor: Double;
-        FCarRotationAirFrictionFactor: Double;
-        FCarLengthwiseMovementFrictionFactor: Double;
-        FCarCrosswiseMovementFrictionFactor: Double;
-        FCarRotationFrictionFactor: Double;
-        FThrowProjectileCooldownTicks: LongInt;
-        FUseNitroCooldownTicks: LongInt;
-        FSpillOilCooldownTicks: LongInt;
-        FNitroEnginePowerFactor: Double;
-        FNitroDurationTicks: LongInt;
-        FCarReactivationTimeTicks: LongInt;
-        FBuggyMass: Double;
-        FBuggyEngineForwardPower: Double;
-        FBuggyEngineRearPower: Double;
-        FJeepMass: Double;
-        FJeepEngineForwardPower: Double;
-        FJeepEngineRearPower: Double;
-        FBonusSize: Double;
-        FBonusMass: Double;
-        FPureScoreAmount: LongInt;
-        FWasherRadius: Double;
-        FWasherMass: Double;
-        FWasherInitialSpeed: Double;
-        FWasherDamage: Double;
-        FSideWasherAngle: Double;
-        FTireRadius: Double;
-        FTireMass: Double;
-        FTireInitialSpeed: Double;
-        FTireDamageFactor: Double;
-        FTireDisappearSpeedFactor: Double;
-        FOilSlickInitialRange: Double;
-        FOilSlickRadius: Double;
-        FOilSlickLifetime: LongInt;
-        FMaxOiledStateDurationTicks: LongInt;
+  TGame = class
+  private
+    FRandomSeed: Int64;
+    FTickCount: LongInt;
+    FWorldWidth: LongInt;
+    FWorldHeight: LongInt;
+    FTrackTileSize: Double;
+    FTrackTileMargin: Double;
+    FLapCount: LongInt;
+    FLapTickCount: LongInt;
+    FInitialFreezeDurationTicks: LongInt;
+    FBurningTimeDurationFactor: Double;
+    FFinishTrackScores: TLongIntArray;
+    FFinishLapScore: LongInt;
+    FLapWaypointsSummaryScoreFactor: Double;
+    FCarDamageScoreFactor: Double;
+    FCarEliminationScore: LongInt;
+    FCarWidth: Double;
+    FCarHeight: Double;
+    FCarEnginePowerChangePerTick: Double;
+    FCarWheelTurnChangePerTick: Double;
+    FCarAngularSpeedFactor: Double;
+    FCarMovementAirFrictionFactor: Double;
+    FCarRotationAirFrictionFactor: Double;
+    FCarLengthwiseMovementFrictionFactor: Double;
+    FCarCrosswiseMovementFrictionFactor: Double;
+    FCarRotationFrictionFactor: Double;
+    FThrowProjectileCooldownTicks: LongInt;
+    FUseNitroCooldownTicks: LongInt;
+    FSpillOilCooldownTicks: LongInt;
+    FNitroEnginePowerFactor: Double;
+    FNitroDurationTicks: LongInt;
+    FCarReactivationTimeTicks: LongInt;
+    FBuggyMass: Double;
+    FBuggyEngineForwardPower: Double;
+    FBuggyEngineRearPower: Double;
+    FJeepMass: Double;
+    FJeepEngineForwardPower: Double;
+    FJeepEngineRearPower: Double;
+    FBonusSize: Double;
+    FBonusMass: Double;
+    FPureScoreAmount: LongInt;
+    FWasherRadius: Double;
+    FWasherMass: Double;
+    FWasherInitialSpeed: Double;
+    FWasherDamage: Double;
+    FSideWasherAngle: Double;
+    FTireRadius: Double;
+    FTireMass: Double;
+    FTireInitialSpeed: Double;
+    FTireDamageFactor: Double;
+    FTireDisappearSpeedFactor: Double;
+    FOilSlickInitialRange: Double;
+    FOilSlickRadius: Double;
+    FOilSlickLifetime: LongInt;
+    FMaxOiledStateDurationTicks: LongInt;
+    function GetRandomSeed: Int64;
+    function GetTickCount: LongInt;
+    function GetWorldWidth: LongInt;
+    function GetWorldHeight: LongInt;
+    function GetTrackTileSize: Double;
+    function GetTrackTileMargin: Double;
+    function GetLapCount: LongInt;
+    function GetLapTickCount: LongInt;
+    function GetInitialFreezeDurationTicks: LongInt;
+    function GetBurningTimeDurationFactor: Double;
+    function GetFinishTrackScores: TLongIntArray;
+    function GetFinishLapScore: LongInt;
+    function GetLapWaypointsSummaryScoreFactor: Double;
+    function GetCarDamageScoreFactor: Double;
+    function GetCarEliminationScore: LongInt;
+    function GetCarWidth: Double;
+    function GetCarHeight: Double;
+    function GetCarEnginePowerChangePerTick: Double;
+    function GetCarWheelTurnChangePerTick: Double;
+    function GetCarAngularSpeedFactor: Double;
+    function GetCarMovementAirFrictionFactor: Double;
+    function GetCarRotationAirFrictionFactor: Double;
+    function GetCarLengthwiseMovementFrictionFactor: Double;
+    function GetCarCrosswiseMovementFrictionFactor: Double;
+    function GetCarRotationFrictionFactor: Double;
+    function GetThrowProjectileCooldownTicks: LongInt;
+    function GetUseNitroCooldownTicks: LongInt;
+    function GetSpillOilCooldownTicks: LongInt;
+    function GetNitroEnginePowerFactor: Double;
+    function GetNitroDurationTicks: LongInt;
+    function GetCarReactivationTimeTicks: LongInt;
+    function GetBuggyMass: Double;
+    function GetBuggyEngineForwardPower: Double;
+    function GetBuggyEngineRearPower: Double;
+    function GetJeepMass: Double;
+    function GetJeepEngineForwardPower: Double;
+    function GetJeepEngineRearPower: Double;
+    function GetBonusSize: Double;
+    function GetBonusMass: Double;
+    function GetPureScoreAmount: LongInt;
+    function GetWasherRadius: Double;
+    function GetWasherMass: Double;
+    function GetWasherInitialSpeed: Double;
+    function GetWasherDamage: Double;
+    function GetSideWasherAngle: Double;
+    function GetTireRadius: Double;
+    function GetTireMass: Double;
+    function GetTireInitialSpeed: Double;
+    function GetTireDamageFactor: Double;
+    function GetTireDisappearSpeedFactor: Double;
+    function GetOilSlickInitialRange: Double;
+    function GetOilSlickRadius: Double;
+    function GetOilSlickLifetime: LongInt;
+    function GetMaxOiledStateDurationTicks: LongInt;
+  public
+    property RandomSeed: Int64 read GetRandomSeed;
+    property TickCount: LongInt read GetTickCount;
+    property WorldWidth: LongInt read GetWorldWidth;
+    property WorldHeight: LongInt read GetWorldHeight;
+    property TrackTileSize: Double read GetTrackTileSize;
+    property TrackTileMargin: Double read GetTrackTileMargin;
+    property LapCount: LongInt read GetLapCount;
+    property LapTickCount: LongInt read GetLapTickCount;
+    property InitialFreezeDurationTicks: LongInt read GetInitialFreezeDurationTicks;
+    property BurningTimeDurationFactor: Double read GetBurningTimeDurationFactor;
+    property FinishTrackScores: TLongIntArray read GetFinishTrackScores;
+    property FinishLapScore: LongInt read GetFinishLapScore;
+    property LapWaypointsSummaryScoreFactor: Double read GetLapWaypointsSummaryScoreFactor;
+    property CarDamageScoreFactor: Double read GetCarDamageScoreFactor;
+    property CarEliminationScore: LongInt read GetCarEliminationScore;
+    property CarWidth: Double read GetCarWidth;
+    property CarHeight: Double read GetCarHeight;
+    property CarEnginePowerChangePerTick: Double read GetCarEnginePowerChangePerTick;
+    property CarWheelTurnChangePerTick: Double read GetCarWheelTurnChangePerTick;
+    property CarAngularSpeedFactor: Double read GetCarAngularSpeedFactor;
+    property CarMovementAirFrictionFactor: Double read GetCarMovementAirFrictionFactor;
+    property CarRotationAirFrictionFactor: Double read GetCarRotationAirFrictionFactor;
+    property CarLengthwiseMovementFrictionFactor: Double read GetCarLengthwiseMovementFrictionFactor;
+    property CarCrosswiseMovementFrictionFactor: Double read GetCarCrosswiseMovementFrictionFactor;
+    property CarRotationFrictionFactor: Double read GetCarRotationFrictionFactor;
+    property ThrowProjectileCooldownTicks: LongInt read GetThrowProjectileCooldownTicks;
+    property UseNitroCooldownTicks: LongInt read GetUseNitroCooldownTicks;
+    property SpillOilCooldownTicks: LongInt read GetSpillOilCooldownTicks;
+    property NitroEnginePowerFactor: Double read GetNitroEnginePowerFactor;
+    property NitroDurationTicks: LongInt read GetNitroDurationTicks;
+    property CarReactivationTimeTicks: LongInt read GetCarReactivationTimeTicks;
+    property BuggyMass: Double read GetBuggyMass;
+    property BuggyEngineForwardPower: Double read GetBuggyEngineForwardPower;
+    property BuggyEngineRearPower: Double read GetBuggyEngineRearPower;
+    property JeepMass: Double read GetJeepMass;
+    property JeepEngineForwardPower: Double read GetJeepEngineForwardPower;
+    property JeepEngineRearPower: Double read GetJeepEngineRearPower;
+    property BonusSize: Double read GetBonusSize;
+    property BonusMass: Double read GetBonusMass;
+    property PureScoreAmount: LongInt read GetPureScoreAmount;
+    property WasherRadius: Double read GetWasherRadius;
+    property WasherMass: Double read GetWasherMass;
+    property WasherInitialSpeed: Double read GetWasherInitialSpeed;
+    property WasherDamage: Double read GetWasherDamage;
+    property SideWasherAngle: Double read GetSideWasherAngle;
+    property TireRadius: Double read GetTireRadius;
+    property TireMass: Double read GetTireMass;
+    property TireInitialSpeed: Double read GetTireInitialSpeed;
+    property TireDamageFactor: Double read GetTireDamageFactor;
+    property TireDisappearSpeedFactor: Double read GetTireDisappearSpeedFactor;
+    property OilSlickInitialRange: Double read GetOilSlickInitialRange;
+    property OilSlickRadius: Double read GetOilSlickRadius;
+    property OilSlickLifetime: LongInt read GetOilSlickLifetime;
+    property MaxOiledStateDurationTicks: LongInt read GetMaxOiledStateDurationTicks;
+    constructor Create(const ARandomSeed: Int64; const ATickCount: LongInt; const AWorldWidth: LongInt; 
+      const AWorldHeight: LongInt; const ATrackTileSize: Double; const ATrackTileMargin: Double; 
+      const ALapCount: LongInt; const AlapTickCount: LongInt; const AInitialFreezeDurationTicks: LongInt; 
+      const ABurningTimeDurationFactor: Double; const AFinishTrackScores: TLongIntArray; 
+      const AFinishLapScore: LongInt; const ALapWaypointsSummaryScoreFactor: Double;
+      const ACarDamageScoreFactor: Double; const ACarEliminationScore: LongInt; const ACarWidth: Double; 
+      const ACarHeight: Double; const ACarEnginePowerChangePerTick: Double; 
+      const ACarWheelTurnChangePerTick: Double; const ACarAngularSpeedFactor: Double;
+      const ACarMovementAirFrictionFactor: Double; const ACarRotationAirFrictionFactor: Double;
+      const ACarLengthwiseMovementFrictionFactor: Double; 
+      const ACarCrosswiseMovementFrictionFactor: Double; const ACarRotationFrictionFactor: Double; 
+      const AThrowProjectileCooldownTicks: LongInt; const AUseNitroCooldownTicks: LongInt; 
+      const ASpillOilCooldownTicks: LongInt; const ANitroEnginePowerFactor: Double;
+      const ANitroDurationTicks: LongInt; const ACarReactivationTimeTicks: LongInt; 
+      const ABuggyMass: Double; const ABuggyEngineForwardPower: Double; 
+      const ABuggyEngineRearPower: Double; const AJeepMass: Double; 
+      const AJeepEngineForwardPower: Double; const AJeepEngineRearPower: Double; 
+      const ABonusSize: Double; const ABonusMass: Double; const APureScoreAmount: LongInt; 
+      const AWasherRadius: Double; const AWasherMass: Double; const AWasherInitialSpeed: Double;
+      const AWasherDamage: Double; const ASideWasherAngle: Double; const ATireRadius: Double; 
+      const ATireMass: Double; const ATireInitialSpeed: Double; const ATireDamageFactor: Double; 
+      const ATireDisappearSpeedFactor: Double; const AOilSlickInitialRange: Double; 
+      const AOilSlickRadius: Double; const AOilSlickLifetime: LongInt;
+      const AMaxOiledStateDurationTicks: LongInt);
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create(randomSeed: Int64; tickCount: LongInt; worldWidth: LongInt; worldHeight: LongInt;
-                trackTileSize: Double; trackTileMargin: Double; lapCount: LongInt; lapTickCount: LongInt;
-                initialFreezeDurationTicks: LongInt; burningTimeDurationFactor: Double;
-                finishTrackScores: TLongIntArray; finishLapScore: LongInt; lapWaypointsSummaryScoreFactor: Double;
-                carDamageScoreFactor: Double; carEliminationScore: LongInt; carWidth: Double; carHeight: Double;
-                carEnginePowerChangePerTick: Double; carWheelTurnChangePerTick: Double; carAngularSpeedFactor: Double;
-                carMovementAirFrictionFactor: Double; carRotationAirFrictionFactor: Double;
-                carLengthwiseMovementFrictionFactor: Double; carCrosswiseMovementFrictionFactor: Double;
-                carRotationFrictionFactor: Double; throwProjectileCooldownTicks: LongInt;
-                useNitroCooldownTicks: LongInt; spillOilCooldownTicks: LongInt; nitroEnginePowerFactor: Double;
-                nitroDurationTicks: LongInt; carReactivationTimeTicks: LongInt; buggyMass: Double;
-                buggyEngineForwardPower: Double; buggyEngineRearPower: Double; jeepMass: Double;
-                jeepEngineForwardPower: Double; jeepEngineRearPower: Double; bonusSize: Double; bonusMass: Double;
-                pureScoreAmount: LongInt; washerRadius: Double; washerMass: Double; washerInitialSpeed: Double;
-                washerDamage: Double; sideWasherAngle: Double; tireRadius: Double; tireMass: Double;
-                tireInitialSpeed: Double; tireDamageFactor: Double; tireDisappearSpeedFactor: Double;
-                oilSlickInitialRange: Double; oilSlickRadius: Double; oilSlickLifetime: LongInt;
-                maxOiledStateDurationTicks: LongInt);
-
-        function GetRandomSeed: Int64;
-        function GetTickCount: LongInt;
-        function GetWorldWidth: LongInt;
-        function GetWorldHeight: LongInt;
-        function GetTrackTileSize: Double;
-        function GetTrackTileMargin: Double;
-        function GetLapCount: LongInt;
-        function GetLapTickCount: LongInt;
-        function GetInitialFreezeDurationTicks: LongInt;
-        function GetBurningTimeDurationFactor: Double;
-        function GetFinishTrackScores: TLongIntArray;
-        function GetFinishLapScore: LongInt;
-        function GetLapWaypointsSummaryScoreFactor: Double;
-        function GetCarDamageScoreFactor: Double;
-        function GetCarEliminationScore: LongInt;
-        function GetCarWidth: Double;
-        function GetCarHeight: Double;
-        function GetCarEnginePowerChangePerTick: Double;
-        function GetCarWheelTurnChangePerTick: Double;
-        function GetCarAngularSpeedFactor: Double;
-        function GetCarMovementAirFrictionFactor: Double;
-        function GetCarRotationAirFrictionFactor: Double;
-        function GetCarLengthwiseMovementFrictionFactor: Double;
-        function GetCarCrosswiseMovementFrictionFactor: Double;
-        function GetCarRotationFrictionFactor: Double;
-        function GetThrowProjectileCooldownTicks: LongInt;
-        function GetUseNitroCooldownTicks: LongInt;
-        function GetSpillOilCooldownTicks: LongInt;
-        function GetNitroEnginePowerFactor: Double;
-        function GetNitroDurationTicks: LongInt;
-        function GetCarReactivationTimeTicks: LongInt;
-        function GetBuggyMass: Double;
-        function GetBuggyEngineForwardPower: Double;
-        function GetBuggyEngineRearPower: Double;
-        function GetJeepMass: Double;
-        function GetJeepEngineForwardPower: Double;
-        function GetJeepEngineRearPower: Double;
-        function GetBonusSize: Double;
-        function GetBonusMass: Double;
-        function GetPureScoreAmount: LongInt;
-        function GetWasherRadius: Double;
-        function GetWasherMass: Double;
-        function GetWasherInitialSpeed: Double;
-        function GetWasherDamage: Double;
-        function GetSideWasherAngle: Double;
-        function GetTireRadius: Double;
-        function GetTireMass: Double;
-        function GetTireInitialSpeed: Double;
-        function GetTireDamageFactor: Double;
-        function GetTireDisappearSpeedFactor: Double;
-        function GetOilSlickInitialRange: Double;
-        function GetOilSlickRadius: Double;
-        function GetOilSlickLifetime: LongInt;
-        function GetMaxOiledStateDurationTicks: LongInt;
-
-        destructor Destroy; override;
-
-    end;
-
-    TGameArray = array of TGame;
+  TGameArray = array of TGame;
 
 implementation
 
-constructor TGame.Create(randomSeed: Int64; tickCount: LongInt; worldWidth: LongInt; worldHeight: LongInt;
-        trackTileSize: Double; trackTileMargin: Double; lapCount: LongInt; lapTickCount: LongInt;
-        initialFreezeDurationTicks: LongInt; burningTimeDurationFactor: Double; finishTrackScores: TLongIntArray;
-        finishLapScore: LongInt; lapWaypointsSummaryScoreFactor: Double; carDamageScoreFactor: Double;
-        carEliminationScore: LongInt; carWidth: Double; carHeight: Double; carEnginePowerChangePerTick: Double;
-        carWheelTurnChangePerTick: Double; carAngularSpeedFactor: Double; carMovementAirFrictionFactor: Double;
-        carRotationAirFrictionFactor: Double; carLengthwiseMovementFrictionFactor: Double;
-        carCrosswiseMovementFrictionFactor: Double; carRotationFrictionFactor: Double;
-        throwProjectileCooldownTicks: LongInt; useNitroCooldownTicks: LongInt; spillOilCooldownTicks: LongInt;
-        nitroEnginePowerFactor: Double; nitroDurationTicks: LongInt; carReactivationTimeTicks: LongInt;
-        buggyMass: Double; buggyEngineForwardPower: Double; buggyEngineRearPower: Double; jeepMass: Double;
-        jeepEngineForwardPower: Double; jeepEngineRearPower: Double; bonusSize: Double; bonusMass: Double;
-        pureScoreAmount: LongInt; washerRadius: Double; washerMass: Double; washerInitialSpeed: Double;
-        washerDamage: Double; sideWasherAngle: Double; tireRadius: Double; tireMass: Double; tireInitialSpeed: Double;
-        tireDamageFactor: Double; tireDisappearSpeedFactor: Double; oilSlickInitialRange: Double;
-        oilSlickRadius: Double; oilSlickLifetime: LongInt; maxOiledStateDurationTicks: LongInt);
-begin
-    FRandomSeed := randomSeed;
-    FTickCount := tickCount;
-    FWorldWidth := worldWidth;
-    FWorldHeight := worldHeight;
-    FTrackTileSize := trackTileSize;
-    FTrackTileMargin := trackTileMargin;
-    FLapCount := lapCount;
-    FLapTickCount := lapTickCount;
-    FInitialFreezeDurationTicks := initialFreezeDurationTicks;
-    FBurningTimeDurationFactor := burningTimeDurationFactor;
-    if finishTrackScores = nil then begin
-        FFinishTrackScores := nil;
-    end else begin
-        FFinishTrackScores := Copy(finishTrackScores, 0, Length(finishTrackScores));
-    end;
-    FFinishLapScore := finishLapScore;
-    FLapWaypointsSummaryScoreFactor := lapWaypointsSummaryScoreFactor;
-    FCarDamageScoreFactor := carDamageScoreFactor;
-    FCarEliminationScore := carEliminationScore;
-    FCarWidth := carWidth;
-    FCarHeight := carHeight;
-    FCarEnginePowerChangePerTick := carEnginePowerChangePerTick;
-    FCarWheelTurnChangePerTick := carWheelTurnChangePerTick;
-    FCarAngularSpeedFactor := carAngularSpeedFactor;
-    FCarMovementAirFrictionFactor := carMovementAirFrictionFactor;
-    FCarRotationAirFrictionFactor := carRotationAirFrictionFactor;
-    FCarLengthwiseMovementFrictionFactor := carLengthwiseMovementFrictionFactor;
-    FCarCrosswiseMovementFrictionFactor := carCrosswiseMovementFrictionFactor;
-    FCarRotationFrictionFactor := carRotationFrictionFactor;
-    FThrowProjectileCooldownTicks := throwProjectileCooldownTicks;
-    FUseNitroCooldownTicks := useNitroCooldownTicks;
-    FSpillOilCooldownTicks := spillOilCooldownTicks;
-    FNitroEnginePowerFactor := nitroEnginePowerFactor;
-    FNitroDurationTicks := nitroDurationTicks;
-    FCarReactivationTimeTicks := carReactivationTimeTicks;
-    FBuggyMass := buggyMass;
-    FBuggyEngineForwardPower := buggyEngineForwardPower;
-    FBuggyEngineRearPower := buggyEngineRearPower;
-    FJeepMass := jeepMass;
-    FJeepEngineForwardPower := jeepEngineForwardPower;
-    FJeepEngineRearPower := jeepEngineRearPower;
-    FBonusSize := bonusSize;
-    FBonusMass := bonusMass;
-    FPureScoreAmount := pureScoreAmount;
-    FWasherRadius := washerRadius;
-    FWasherMass := washerMass;
-    FWasherInitialSpeed := washerInitialSpeed;
-    FWasherDamage := washerDamage;
-    FSideWasherAngle := sideWasherAngle;
-    FTireRadius := tireRadius;
-    FTireMass := tireMass;
-    FTireInitialSpeed := tireInitialSpeed;
-    FTireDamageFactor := tireDamageFactor;
-    FTireDisappearSpeedFactor := tireDisappearSpeedFactor;
-    FOilSlickInitialRange := oilSlickInitialRange;
-    FOilSlickRadius := oilSlickRadius;
-    FOilSlickLifetime := oilSlickLifetime;
-    FMaxOiledStateDurationTicks := maxOiledStateDurationTicks;
-end;
-
 function TGame.GetRandomSeed: Int64;
 begin
-    result := FRandomSeed;
+  Result := FRandomSeed;
 end;
 
 function TGame.GetTickCount: LongInt;
 begin
-    result := FTickCount;
+  Result := FTickCount;
 end;
 
 function TGame.GetWorldWidth: LongInt;
 begin
-    result := FWorldWidth;
+  Result := FWorldWidth;
 end;
 
 function TGame.GetWorldHeight: LongInt;
 begin
-    result := FWorldHeight;
+  Result := FWorldHeight;
 end;
 
 function TGame.GetTrackTileSize: Double;
 begin
-    result := FTrackTileSize;
+  Result := FTrackTileSize;
 end;
 
 function TGame.GetTrackTileMargin: Double;
 begin
-    result := FTrackTileMargin;
+  Result := FTrackTileMargin;
 end;
 
 function TGame.GetLapCount: LongInt;
 begin
-    result := FLapCount;
+  Result := FLapCount;
 end;
 
 function TGame.GetLapTickCount: LongInt;
 begin
-    result := FLapTickCount;
+  Result := FLapTickCount;
 end;
 
 function TGame.GetInitialFreezeDurationTicks: LongInt;
 begin
-    result := FInitialFreezeDurationTicks;
+  Result := FInitialFreezeDurationTicks;
 end;
 
 function TGame.GetBurningTimeDurationFactor: Double;
 begin
-    result := FBurningTimeDurationFactor;
+  Result := FBurningTimeDurationFactor;
 end;
 
 function TGame.GetFinishTrackScores: TLongIntArray;
 begin
-    if FFinishTrackScores = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FFinishTrackScores, 0, Length(FFinishTrackScores));
-    end;
+  if Assigned(FFinishTrackScores) then
+    Result := Copy(FFinishTrackScores, 0, Length(FFinishTrackScores))
+  else  
+    Result := nil;
 end;
 
 function TGame.GetFinishLapScore: LongInt;
 begin
-    result := FFinishLapScore;
+  Result := FFinishLapScore;
 end;
 
 function TGame.GetLapWaypointsSummaryScoreFactor: Double;
 begin
-    result := FLapWaypointsSummaryScoreFactor;
+  Result := FLapWaypointsSummaryScoreFactor;
 end;
 
 function TGame.GetCarDamageScoreFactor: Double;
 begin
-    result := FCarDamageScoreFactor;
+  Result := FCarDamageScoreFactor;
 end;
 
 function TGame.GetCarEliminationScore: LongInt;
 begin
-    result := FCarEliminationScore;
+  Result := FCarEliminationScore;
 end;
 
 function TGame.GetCarWidth: Double;
 begin
-    result := FCarWidth;
+  Result := FCarWidth;
 end;
 
 function TGame.GetCarHeight: Double;
 begin
-    result := FCarHeight;
+  Result := FCarHeight;
 end;
 
 function TGame.GetCarEnginePowerChangePerTick: Double;
 begin
-    result := FCarEnginePowerChangePerTick;
+  Result := FCarEnginePowerChangePerTick;
 end;
 
 function TGame.GetCarWheelTurnChangePerTick: Double;
 begin
-    result := FCarWheelTurnChangePerTick;
+  Result := FCarWheelTurnChangePerTick;
 end;
 
 function TGame.GetCarAngularSpeedFactor: Double;
 begin
-    result := FCarAngularSpeedFactor;
+  Result := FCarAngularSpeedFactor;
 end;
 
 function TGame.GetCarMovementAirFrictionFactor: Double;
 begin
-    result := FCarMovementAirFrictionFactor;
+  Result := FCarMovementAirFrictionFactor;
 end;
 
 function TGame.GetCarRotationAirFrictionFactor: Double;
 begin
-    result := FCarRotationAirFrictionFactor;
+  Result := FCarRotationAirFrictionFactor;
 end;
 
 function TGame.GetCarLengthwiseMovementFrictionFactor: Double;
 begin
-    result := FCarLengthwiseMovementFrictionFactor;
+  Result := FCarLengthwiseMovementFrictionFactor;
 end;
 
 function TGame.GetCarCrosswiseMovementFrictionFactor: Double;
 begin
-    result := FCarCrosswiseMovementFrictionFactor;
+  Result := FCarCrosswiseMovementFrictionFactor;
 end;
 
 function TGame.GetCarRotationFrictionFactor: Double;
 begin
-    result := FCarRotationFrictionFactor;
+  Result := FCarRotationFrictionFactor;
 end;
 
 function TGame.GetThrowProjectileCooldownTicks: LongInt;
 begin
-    result := FThrowProjectileCooldownTicks;
+  Result := FThrowProjectileCooldownTicks;
 end;
 
 function TGame.GetUseNitroCooldownTicks: LongInt;
 begin
-    result := FUseNitroCooldownTicks;
+  Result := FUseNitroCooldownTicks;
 end;
 
 function TGame.GetSpillOilCooldownTicks: LongInt;
 begin
-    result := FSpillOilCooldownTicks;
+  Result := FSpillOilCooldownTicks;
 end;
 
 function TGame.GetNitroEnginePowerFactor: Double;
 begin
-    result := FNitroEnginePowerFactor;
+  Result := FNitroEnginePowerFactor;
 end;
 
 function TGame.GetNitroDurationTicks: LongInt;
 begin
-    result := FNitroDurationTicks;
+  Result := FNitroDurationTicks;
 end;
 
 function TGame.GetCarReactivationTimeTicks: LongInt;
 begin
-    result := FCarReactivationTimeTicks;
+  Result := FCarReactivationTimeTicks;
 end;
 
 function TGame.GetBuggyMass: Double;
 begin
-    result := FBuggyMass;
+  Result := FBuggyMass;
 end;
 
 function TGame.GetBuggyEngineForwardPower: Double;
 begin
-    result := FBuggyEngineForwardPower;
+  Result := FBuggyEngineForwardPower;
 end;
 
 function TGame.GetBuggyEngineRearPower: Double;
 begin
-    result := FBuggyEngineRearPower;
+  Result := FBuggyEngineRearPower;
 end;
 
 function TGame.GetJeepMass: Double;
 begin
-    result := FJeepMass;
+  Result := FJeepMass;
 end;
 
 function TGame.GetJeepEngineForwardPower: Double;
 begin
-    result := FJeepEngineForwardPower;
+  Result := FJeepEngineForwardPower;
 end;
 
 function TGame.GetJeepEngineRearPower: Double;
 begin
-    result := FJeepEngineRearPower;
+  Result := FJeepEngineRearPower;
 end;
 
 function TGame.GetBonusSize: Double;
 begin
-    result := FBonusSize;
+  Result := FBonusSize;
 end;
 
 function TGame.GetBonusMass: Double;
 begin
-    result := FBonusMass;
+  Result := FBonusMass;
 end;
 
 function TGame.GetPureScoreAmount: LongInt;
 begin
-    result := FPureScoreAmount;
+  Result := FPureScoreAmount;
 end;
 
 function TGame.GetWasherRadius: Double;
 begin
-    result := FWasherRadius;
+  Result := FWasherRadius;
 end;
 
 function TGame.GetWasherMass: Double;
 begin
-    result := FWasherMass;
+  Result := FWasherMass;
 end;
 
 function TGame.GetWasherInitialSpeed: Double;
 begin
-    result := FWasherInitialSpeed;
+  Result := FWasherInitialSpeed;
 end;
 
 function TGame.GetWasherDamage: Double;
 begin
-    result := FWasherDamage;
+  Result := FWasherDamage;
 end;
 
 function TGame.GetSideWasherAngle: Double;
 begin
-    result := FSideWasherAngle;
+  Result := FSideWasherAngle;
 end;
 
 function TGame.GetTireRadius: Double;
 begin
-    result := FTireRadius;
+  Result := FTireRadius;
 end;
 
 function TGame.GetTireMass: Double;
 begin
-    result := FTireMass;
+  Result := FTireMass;
 end;
 
 function TGame.GetTireInitialSpeed: Double;
 begin
-    result := FTireInitialSpeed;
+  Result := FTireInitialSpeed;
 end;
 
 function TGame.GetTireDamageFactor: Double;
 begin
-    result := FTireDamageFactor;
+  Result := FTireDamageFactor;
 end;
 
 function TGame.GetTireDisappearSpeedFactor: Double;
 begin
-    result := FTireDisappearSpeedFactor;
+  Result := FTireDisappearSpeedFactor;
 end;
 
 function TGame.GetOilSlickInitialRange: Double;
 begin
-    result := FOilSlickInitialRange;
+  Result := FOilSlickInitialRange;
 end;
 
 function TGame.GetOilSlickRadius: Double;
 begin
-    result := FOilSlickRadius;
+  Result := FOilSlickRadius;
 end;
 
 function TGame.GetOilSlickLifetime: LongInt;
 begin
-    result := FOilSlickLifetime;
+  Result := FOilSlickLifetime;
 end;
 
 function TGame.GetMaxOiledStateDurationTicks: LongInt;
 begin
-    result := FMaxOiledStateDurationTicks;
+  Result := FMaxOiledStateDurationTicks;
+end;
+
+constructor TGame.Create(const ARandomSeed: Int64; const ATickCount: LongInt; const AWorldWidth: LongInt; 
+  const AWorldHeight: LongInt; const ATrackTileSize: Double; const ATrackTileMargin: Double; 
+  const ALapCount: LongInt; const AlapTickCount: LongInt; const AInitialFreezeDurationTicks: LongInt; 
+  const ABurningTimeDurationFactor: Double; const AFinishTrackScores: TLongIntArray; 
+  const AFinishLapScore: LongInt; const ALapWaypointsSummaryScoreFactor: Double;
+  const ACarDamageScoreFactor: Double; const ACarEliminationScore: LongInt; const ACarWidth: Double; 
+  const ACarHeight: Double; const ACarEnginePowerChangePerTick: Double; 
+  const ACarWheelTurnChangePerTick: Double; const ACarAngularSpeedFactor: Double;
+  const ACarMovementAirFrictionFactor: Double; const ACarRotationAirFrictionFactor: Double;
+  const ACarLengthwiseMovementFrictionFactor: Double; 
+  const ACarCrosswiseMovementFrictionFactor: Double; const ACarRotationFrictionFactor: Double; 
+  const AThrowProjectileCooldownTicks: LongInt; const AUseNitroCooldownTicks: LongInt; 
+  const ASpillOilCooldownTicks: LongInt; const ANitroEnginePowerFactor: Double;
+  const ANitroDurationTicks: LongInt; const ACarReactivationTimeTicks: LongInt; 
+  const ABuggyMass: Double; const ABuggyEngineForwardPower: Double; 
+  const ABuggyEngineRearPower: Double; const AJeepMass: Double; 
+  const AJeepEngineForwardPower: Double; const AJeepEngineRearPower: Double; 
+  const ABonusSize: Double; const ABonusMass: Double; const APureScoreAmount: LongInt; 
+  const AWasherRadius: Double; const AWasherMass: Double; const AWasherInitialSpeed: Double;
+  const AWasherDamage: Double; const ASideWasherAngle: Double; const ATireRadius: Double; 
+  const ATireMass: Double; const ATireInitialSpeed: Double; const ATireDamageFactor: Double; 
+  const ATireDisappearSpeedFactor: Double; const AOilSlickInitialRange: Double; 
+  const AOilSlickRadius: Double; const AOilSlickLifetime: LongInt;
+  const AMaxOiledStateDurationTicks: LongInt);
+begin
+  FRandomSeed := ARandomSeed;
+  FTickCount := ATickCount;
+  FWorldWidth := AWorldWidth;
+  FWorldHeight := AWorldHeight;
+  FTrackTileSize := ATrackTileSize;
+  FTrackTileMargin := ATrackTileMargin;
+  FLapCount := ALapCount;
+  FLapTickCount := ALapTickCount;
+  FInitialFreezeDurationTicks := AInitialFreezeDurationTicks;
+  FBurningTimeDurationFactor := ABurningTimeDurationFactor;
+  if Assigned(AFinishTrackScores) then
+    FFinishTrackScores := Copy(AFinishTrackScores, 0, Length(AFinishTrackScores))
+  else  
+    FFinishTrackScores := nil;
+  FFinishLapScore := AFinishLapScore;
+  FLapWaypointsSummaryScoreFactor := AlapWaypointsSummaryScoreFactor;
+  FCarDamageScoreFactor := ACarDamageScoreFactor;
+  FCarEliminationScore := ACarEliminationScore;
+  FCarWidth := ACarWidth;
+  FCarHeight := AcarHeight;
+  FCarEnginePowerChangePerTick := ACarEnginePowerChangePerTick;
+  FCarWheelTurnChangePerTick := ACarWheelTurnChangePerTick;
+  FCarAngularSpeedFactor := AcarAngularSpeedFactor;
+  FCarMovementAirFrictionFactor := ACarMovementAirFrictionFactor;
+  FCarRotationAirFrictionFactor := ACarRotationAirFrictionFactor;
+  FCarLengthwiseMovementFrictionFactor := ACarLengthwiseMovementFrictionFactor;
+  FCarCrosswiseMovementFrictionFactor := ACarCrosswiseMovementFrictionFactor;
+  FCarRotationFrictionFactor := ACarRotationFrictionFactor;
+  FThrowProjectileCooldownTicks := AThrowProjectileCooldownTicks;
+  FUseNitroCooldownTicks := AUseNitroCooldownTicks;
+  FSpillOilCooldownTicks := ASpillOilCooldownTicks;
+  FNitroEnginePowerFactor := ANitroEnginePowerFactor;
+  FNitroDurationTicks := ANitroDurationTicks;
+  FCarReactivationTimeTicks := ACarReactivationTimeTicks;
+  FBuggyMass := ABuggyMass;
+  FBuggyEngineForwardPower := ABuggyEngineForwardPower;
+  FBuggyEngineRearPower := ABuggyEngineRearPower;
+  FJeepMass := AJeepMass;
+  FJeepEngineForwardPower := AJeepEngineForwardPower;
+  FJeepEngineRearPower := AJeepEngineRearPower;
+  FBonusSize := ABonusSize;
+  FBonusMass := AbonusMass;
+  FPureScoreAmount := APureScoreAmount;
+  FWasherRadius := AWasherRadius;
+  FWasherMass := AWasherMass;
+  FWasherInitialSpeed := AWasherInitialSpeed;
+  FWasherDamage := AWasherDamage;
+  FSideWasherAngle := ASideWasherAngle;
+  FTireRadius := ATireRadius;
+  FTireMass := ATireMass;
+  FTireInitialSpeed := ATireInitialSpeed;
+  FTireDamageFactor := ATireDamageFactor;
+  FTireDisappearSpeedFactor := ATireDisappearSpeedFactor;
+  FOilSlickInitialRange := AOilSlickInitialRange;
+  FOilSlickRadius := AOilSlickRadius;
+  FOilSlickLifetime := AOilSlickLifetime;
+  FMaxOiledStateDurationTicks := AMaxOiledStateDurationTicks;
 end;
 
 destructor TGame.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.

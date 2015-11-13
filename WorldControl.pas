@@ -3,306 +3,340 @@ unit WorldControl;
 interface
 
 uses
-    Math, TypeControl, BonusControl, CarControl, DirectionControl, OilSlickControl, PlayerControl, ProjectileControl, TileTypeControl;
+  SysUtils, Math, TypeControl, BonusControl, CarControl, DirectionControl, OilSlickControl, 
+  PlayerControl, ProjectileControl, TileTypeControl;
 
 type
-    TWorld = class
-    private
-        FTick: LongInt;
-        FTickCount: LongInt;
-        FLastTickIndex: LongInt;
-        FWidth: LongInt;
-        FHeight: LongInt;
-        FPlayers: TPlayerArray;
-        FCars: TCarArray;
-        FProjectiles: TProjectileArray;
-        FBonuses: TBonusArray;
-        FOilSlicks: TOilSlickArray;
-        FMapName: String;
-        FTilesXY: TTileTypeArray2D;
-        FWaypoints: TLongIntArray2D;
-        FStartingDirection: TDirection;
+  TWorld = class
+  private
+    FTick: LongInt;
+    FTickCount: LongInt;
+    FLastTickIndex: LongInt;
+    FWidth: LongInt;
+    FHeight: LongInt;
+    FPlayers: TPlayerArray;
+    FCars: TCarArray;
+    FProjectiles: TProjectileArray;
+    FBonuses: TBonusArray;
+    FOilSlicks: TOilSlickArray;
+    FMapName: string;
+    FTilesXY: TTileTypeArray2D;
+    FWaypoints: TLongIntArray2D;
+    FStartingDirection: TDirection;
+    function GetTick: LongInt;
+    function GetTickCount: LongInt;
+    function GetLastTickIndex: LongInt;
+    function GetWidth: LongInt;
+    function GetHeight: LongInt;
+    function GetPlayers: TPlayerArray;
+    function GetCars: TCarArray;
+    function GetProjectiles: TProjectileArray;
+    function GetBonuses: TBonusArray;
+    function GetOilSlicks: TOilSlickArray;
+    function GetMapName: string;
+    function GetTilesXY: TTileTypeArray2D;
+    function GetWaypoints: TLongIntArray2D;
+    function GetStartingDirection: TDirection;
+    function GetMyPlayer: TPlayer;
+  public
+    property Tick: LongInt read GetTick;
+    property TickCount: LongInt read GetTickCount;
+    property LastTickIndex: LongInt read GetLastTickIndex;
+    property Width: LongInt read GetWidth;
+    property Height: LongInt read GetHeight;
+    property Players: TPlayerArray read GetPlayers;
+    property Cars: TCarArray read GetCars;
+    property Projectiles: TProjectileArray read GetProjectiles;
+    property Bonuses: TBonusArray read GetBonuses;
+    property OilSlicks: TOilSlickArray read GetOilSlicks;
+    property MapName: string read GetMapName;
+    property TilesXY: TTileTypeArray2D read GetTilesXY;
+    property Waypoints: TLongIntArray2D read GetWaypoints;
+    property StartingDirection: TDirection read GetStartingDirection;
+    property MyPlayer: TPlayer read GetMyPlayer;
+    constructor Create(const ATick: LongInt; const ATickCount: LongInt; const ALastTickIndex: LongInt; 
+      const AWidth: LongInt; const AHeight: LongInt; const APlayers: TPlayerArray; 
+      const ACars: TCarArray; const AProjecTiles: TProjectileArray; const ABonuses: TBonusArray; 
+      const AOilSlicks: TOilSlickArray; const AMapName: string; const ATilesXY: TTileTypeArray2D; 
+      const AWayPoints: TLongIntArray2D; const AStartingDirection: TDirection);
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create(tick: LongInt; tickCount: LongInt; lastTickIndex: LongInt; width: LongInt; height: LongInt;
-                players: TPlayerArray; cars: TCarArray; projectiles: TProjectileArray; bonuses: TBonusArray;
-                oilSlicks: TOilSlickArray; mapName: String; tilesXY: TTileTypeArray2D; waypoints: TLongIntArray2D;
-                startingDirection: TDirection);
-
-        function GetTick: LongInt;
-        function GetTickCount: LongInt;
-        function GetLastTickIndex: LongInt;
-        function GetWidth: LongInt;
-        function GetHeight: LongInt;
-        function GetPlayers: TPlayerArray;
-        function GetCars: TCarArray;
-        function GetProjectiles: TProjectileArray;
-        function GetBonuses: TBonusArray;
-        function GetOilSlicks: TOilSlickArray;
-        function GetMapName: String;
-        function GetTilesXY: TTileTypeArray2D;
-        function GetWaypoints: TLongIntArray2D;
-        function GetStartingDirection: TDirection;
-
-        function GetMyPlayer: TPlayer;
-
-        destructor Destroy; override;
-
-    end;
-
-    TWorldArray = array of TWorld;
+  TWorldArray = array of TWorld;
 
 implementation
 
-constructor TWorld.Create(tick: LongInt; tickCount: LongInt; lastTickIndex: LongInt; width: LongInt; height: LongInt;
-        players: TPlayerArray; cars: TCarArray; projectiles: TProjectileArray; bonuses: TBonusArray;
-        oilSlicks: TOilSlickArray; mapName: String; tilesXY: TTileTypeArray2D; waypoints: TLongIntArray2D;
-        startingDirection: TDirection);
-var
-    i: LongInt;
-
-begin
-    FTick := tick;
-    FTickCount := tickCount;
-    FLastTickIndex := lastTickIndex;
-    FWidth := width;
-    FHeight := height;
-    if players = nil then begin
-        FPlayers := nil;
-    end else begin
-        FPlayers := Copy(players, 0, Length(players));
-    end;
-    if cars = nil then begin
-        FCars := nil;
-    end else begin
-        FCars := Copy(cars, 0, Length(cars));
-    end;
-    if projectiles = nil then begin
-        FProjectiles := nil;
-    end else begin
-        FProjectiles := Copy(projectiles, 0, Length(projectiles));
-    end;
-    if bonuses = nil then begin
-        FBonuses := nil;
-    end else begin
-        FBonuses := Copy(bonuses, 0, Length(bonuses));
-    end;
-    if oilSlicks = nil then begin
-        FOilSlicks := nil;
-    end else begin
-        FOilSlicks := Copy(oilSlicks, 0, Length(oilSlicks));
-    end;
-    FMapName := mapName;
-    if tilesXY = nil then begin
-        FTilesXY := nil;
-    end else begin
-        SetLength(FTilesXY, Length(tilesXY));
-
-        for i := High(tilesXY) downto 0 do begin
-            if tilesXY[i] = nil then begin
-                FTilesXY[i] := nil;
-            end else begin
-                FTilesXY[i] := Copy(tilesXY[i], 0, Length(tilesXY[i]));
-            end;
-        end;
-    end;
-    if waypoints = nil then begin
-        FWaypoints := nil;
-    end else begin
-        SetLength(FWaypoints, Length(waypoints));
-
-        for i := High(waypoints) downto 0 do begin
-            if waypoints[i] = nil then begin
-                FWaypoints[i] := nil;
-            end else begin
-                FWaypoints[i] := Copy(waypoints[i], 0, Length(waypoints[i]));
-            end;
-        end;
-    end;
-    FStartingDirection := startingDirection;
-end;
-
 function TWorld.GetTick: LongInt;
 begin
-    result := FTick;
+  Result := FTick;
 end;
 
 function TWorld.GetTickCount: LongInt;
 begin
-    result := FTickCount;
+  Result := FTickCount;
 end;
 
 function TWorld.GetLastTickIndex: LongInt;
 begin
-    result := FLastTickIndex;
+  Result := FLastTickIndex;
 end;
 
 function TWorld.GetWidth: LongInt;
 begin
-    result := FWidth;
+  Result := FWidth;
 end;
 
 function TWorld.GetHeight: LongInt;
 begin
-    result := FHeight;
+  Result := FHeight;
 end;
 
 function TWorld.GetPlayers: TPlayerArray;
 begin
-    if FPlayers = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FPlayers, 0, Length(FPlayers));
-    end;
+  if Assigned(FPlayers) then 
+    Result := Copy(FPlayers, 0, Length(FPlayers))
+  else
+    Result := nil;
 end;
 
 function TWorld.GetCars: TCarArray;
 begin
-    if FCars = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FCars, 0, Length(FCars));
-    end;
+  if Assigned(FCars) then 
+    Result := Copy(FCars, 0, Length(FCars))
+  else
+    Result := nil;
 end;
 
 function TWorld.GetProjectiles: TProjectileArray;
 begin
-    if FProjectiles = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FProjectiles, 0, Length(FProjectiles));
-    end;
+  if Assigned(FProjectiles) then
+    Result := Copy(FProjectiles, 0, Length(FProjectiles))
+  else  
+    Result := nil;
 end;
 
 function TWorld.GetBonuses: TBonusArray;
 begin
-    if FBonuses = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FBonuses, 0, Length(FBonuses));
-    end;
+  if Assigned(FBonuses) then 
+    Result := Copy(FBonuses, 0, Length(FBonuses))
+  else  
+    Result := nil;
 end;
 
 function TWorld.GetOilSlicks: TOilSlickArray;
 begin
-    if FOilSlicks = nil then begin
-        result := nil;
-    end else begin
-        result := Copy(FOilSlicks, 0, Length(FOilSlicks));
-    end;
+  if Assigned(FOilSlicks) then
+    Result := Copy(FOilSlicks, 0, Length(FOilSlicks))
+  else  
+    Result := nil;
 end;
 
-function TWorld.GetMapName: String;
+function TWorld.GetMapName: string;
 begin
-    result := FMapName;
+  Result := FMapName;
 end;
 
 function TWorld.GetTilesXY: TTileTypeArray2D;
 var
-    i: LongInt;
-
+  I: LongInt;
 begin
-    if FTilesXY = nil then begin
-        result := nil;
-    end else begin
-        SetLength(result, Length(FTilesXY));
-
-        for i := High(FTilesXY) downto 0 do begin
-            if FTilesXY[i] = nil then begin
-                result[i] := nil;
-            end else begin
-                result[i] := Copy(FTilesXY[i], 0, Length(FTilesXY[i]));
-            end;
-        end;
+  if Assigned(FTilesXY) then 
+  begin
+    SetLength(Result, Length(FTilesXY));
+    if Length(FTilesXY) > 0 then
+    begin
+      for i := High(FTilesXY) downto 0 do 
+      begin
+        if Assigned(FTilesXY[I]) then
+          Result[i] := Copy(FTilesXY[I], 0, Length(FTilesXY[I]))
+        else
+          Result[i] := nil;
+      end;
     end;
+  end
+  else
+    Result := nil;
 end;
 
 function TWorld.GetWaypoints: TLongIntArray2D;
 var
-    i: LongInt;
-
+  I: LongInt;
 begin
-    if FWaypoints = nil then begin
-        result := nil;
-    end else begin
-        SetLength(result, Length(FWaypoints));
-
-        for i := High(FWaypoints) downto 0 do begin
-            if FWaypoints[i] = nil then begin
-                result[i] := nil;
-            end else begin
-                result[i] := Copy(FWaypoints[i], 0, Length(FWaypoints[i]));
-            end;
-        end;
+  if Assigned(FWaypoints) then 
+  begin
+    SetLength(Result, Length(FWaypoints));
+    if Length(FWaypoints) > 0 then
+    begin
+      for I := High(FWaypoints) downto 0 do 
+      begin
+        if Assigned(FWaypoints[I]) then
+          Result[I] := Copy(FWaypoints[I], 0, Length(FWaypoints[I]))
+        else
+          Result[I] := nil;
+      end;
     end;
+  end
+  else
+    Result := nil;
 end;
 
 function TWorld.GetStartingDirection: TDirection;
 begin
-    result := FStartingDirection;
+  Result := FStartingDirection;
 end;
 
 function TWorld.GetMyPlayer: TPlayer;
 var
-    playerIndex: LongInt;
-
+  I: LongInt;
 begin
-    for playerIndex := High(FPlayers) downto 0 do begin
-        if FPlayers[playerIndex].GetMe then begin
-            result := FPlayers[playerIndex];
-            exit;
-        end;
+  Result := nil;
+  if Length(FPlayers) > 0 then
+  begin
+    for I := High(FPlayers) downto 0 do 
+    begin
+      if FPlayers[I].IsMe then 
+      begin
+        Result := FPlayers[I];
+        Exit;
+      end;
     end;
+  end;
+end;
 
-    result := nil;
+constructor TWorld.Create(const ATick: LongInt; const ATickCount: LongInt; const ALastTickIndex: LongInt; 
+  const AWidth: LongInt; const AHeight: LongInt; const APlayers: TPlayerArray; 
+  const ACars: TCarArray; const AProjectiles: TProjectileArray; const ABonuses: TBonusArray; 
+  const AOilSlicks: TOilSlickArray; const AMapName: string; const ATilesXY: TTileTypeArray2D; 
+  const AWayPoints: TLongIntArray2D; const AStartingDirection: TDirection);
+var
+  I: LongInt;
+begin
+  FTick := ATick;
+  FTickCount := ATickCount;
+  FLastTickIndex := ALastTickIndex;
+  FWidth := AWidth;
+  FHeight := AHeight;
+  if Assigned(APlayers) then
+    FPlayers := Copy(APlayers, 0, Length(APlayers))
+  else
+    FPlayers := nil;
+  if Assigned(ACars) then
+    FCars := Copy(ACars, 0, Length(ACars))
+  else  
+    FCars := nil;
+  if Assigned(AProjectiles) then
+    FProjectiles := Copy(AProjectiles, 0, Length(AProjectiles))
+  else
+    FProjectiles := nil;
+  if Assigned(ABonuses) then
+    FBonuses := Copy(ABonuses, 0, Length(ABonuses))
+  else  
+    FBonuses := nil;
+  if Assigned(AOilSlicks) then 
+    FOilSlicks := Copy(AOilSlicks, 0, Length(AOilSlicks))
+  else
+    FOilSlicks := nil;
+  FMapName := AMapName;
+  if Assigned(ATilesXY) then
+  begin
+    SetLength(FTilesXY, Length(ATilesXY));
+    if Length(ATilesXY) > 0 then
+    begin
+      for I := High(ATilesXY) downto 0 do 
+      begin
+        if Assigned(ATilesXY[I]) then
+          FTilesXY[I] := Copy(ATilesXY[I], 0, Length(ATilesXY[I]))
+        else  
+          FTilesXY[I] := nil;
+      end;
+    end;
+  end  
+  else
+    FTilesXY := nil;
+  if Assigned(AWaypoints) then 
+  begin
+    SetLength(FWaypoints, Length(AWaypoints));
+    if Length(AWaypoints) > 0 then
+    begin
+      for I := High(AWaypoints) downto 0 do 
+      begin
+        if Assigned(AWaypoints[I]) then 
+          FWaypoints[I] := Copy(AWaypoints[I], 0, Length(AWaypoints[I]))
+        else  
+          FWaypoints[I] := nil;
+      end;
+    end;
+  end
+  else
+    FWaypoints := nil;
+  FStartingDirection := AStartingDirection;
 end;
 
 destructor TWorld.Destroy;
 var
-    i: LongInt;
-
+  I: LongInt;
 begin
-    if FPlayers <> nil then begin
-        for i := High(FPlayers) downto 0 do begin
-            if FPlayers[i] <> nil then begin
-                FPlayers[i].Free;
-            end;
-        end;
+  if Assigned(FPlayers) then 
+  begin
+    if Length(FPlayers) > 0 then
+    begin
+      for I := High(FPlayers) downto 0 do 
+      begin
+        if Assigned(FPlayers[I]) then 
+          FPlayers[I].Free;
+      end;
+      SetLength(FPlayers, 0);
     end;
-
-    if FCars <> nil then begin
-        for i := High(FCars) downto 0 do begin
-            if FCars[i] <> nil then begin
-                FCars[i].Free;
-            end;
-        end;
+  end;
+  if Assigned(FCars) then 
+  begin
+    if Length(FCars) > 0 then
+    begin
+      for I := High(FCars) downto 0 do 
+      begin
+        if Assigned(FCars[I]) then 
+          FCars[I].Free;
+      end;
+      SetLength(FCars, 0);
     end;
-
-    if FProjectiles <> nil then begin
-        for i := High(FProjectiles) downto 0 do begin
-            if FProjectiles[i] <> nil then begin
-                FProjectiles[i].Free;
-            end;
-        end;
+  end;
+  if Assigned(FProjectiles) then 
+  begin
+    if Length(FProjectiles) > 0 then
+    begin
+      for I := High(FProjectiles) downto 0 do 
+      begin
+        if Assigned(FProjectiles[I]) then 
+          FProjectiles[I].Free;
+      end;
+      SetLength(FProjectiles, 0);
     end;
-
-    if FBonuses <> nil then begin
-        for i := High(FBonuses) downto 0 do begin
-            if FBonuses[i] <> nil then begin
-                FBonuses[i].Free;
-            end;
-        end;
+  end;
+  if Assigned(FBonuses) then 
+  begin
+    if Length(FBonuses) > 0 then
+    begin
+      for I := High(FBonuses) downto 0 do 
+      begin
+        if Assigned(FBonuses[I]) then 
+          FBonuses[I].Free;
+      end;
+      SetLength(FBonuses, 0);
     end;
-
-    if FOilSlicks <> nil then begin
-        for i := High(FOilSlicks) downto 0 do begin
-            if FOilSlicks[i] <> nil then begin
-                FOilSlicks[i].Free;
-            end;
-        end;
+  end;
+  if Assigned(FOilSlicks) then 
+  begin
+    if Length(FOilSlicks) > 0 then
+    begin
+      for I := High(FOilSlicks) downto 0 do 
+      begin
+        if Assigned(FOilSlicks[I]) then 
+          FOilSlicks[i].Free;
+      end;
+      SetLength(FOilSlicks, 0);
     end;
-
-    inherited;
+  end;
+  inherited;
 end;
 
 end.
