@@ -3,14 +3,13 @@ unit StrategyControl;
 interface
 
 uses
-    CarControl, WorldControl, GameControl, MoveControl;
+  CarControl, WorldControl, GameControl, MoveControl;
 
 type
-    TStrategy = class
-    public
-        procedure Move(me: TCar; world: TWorld; game: TGame; move: TMove); virtual; abstract;
-
-    end;
+  TStrategy = class
+  public
+    procedure Move(const AMe: TCar; const AWorld: TWorld; const AGame: TGame; const AMove: TMove); virtual; abstract;
+  end;
 
 implementation
 
