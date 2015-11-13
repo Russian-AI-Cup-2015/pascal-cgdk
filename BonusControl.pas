@@ -3,43 +3,42 @@ unit BonusControl;
 interface
 
 uses
-    Math, TypeControl, BonusTypeControl, RectangularUnitControl;
+  Math, TypeControl, BonusTypeControl, RectangularUnitControl;
 
 type
-    TBonus = class (TRectangularUnit)
-    private
-        FType: TBonusType;
+  TBonus = class(TRectangularUnit)
+  private
+    FBonusType: TBonusType;
+    function GetBonusType: TBonusType;
+  public
+    property BonusType: TBonusType read GetBonusType;
+    constructor Create(const AId: Int64; const AMass: Double; const AX: Double; const AY: Double; 
+      const ASpeedX: Double; const ASpeedY: Double; const AAngle: Double;
+      const AAngularSpeed: Double; const AWidth: Double; const AHeight: Double; 
+      const ABonusType: TBonusType);
+    destructor Destroy; override;
+  end;
 
-    public
-        constructor Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-                angularSpeed: Double; width: Double; height: Double; bonusType: TBonusType);
-
-        function GetType: TBonusType;
-
-        destructor Destroy; override;
-
-    end;
-
-    TBonusArray = array of TBonus;
+  TBonusArray = array of TBonus;
 
 implementation
 
-constructor TBonus.Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-        angularSpeed: Double; width: Double; height: Double; bonusType: TBonusType);
+function TBonus.GetBonusType: TBonusType;
 begin
-    inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height);
-
-    FType := bonusType;
+  Result := FBonusType;
 end;
 
-function TBonus.GetType: TBonusType;
+constructor TBonus.Create(const AId: Int64; const AMass: Double; const AX: Double; const AY: Double; 
+  const ASpeedX: Double; const ASpeedY: Double; const AAngle: Double; const AAngularSpeed: Double; 
+  const AWidth: Double; const AHeight: Double; const ABonusType: TBonusType);
 begin
-    result := FType;
+  inherited Create(AId, AMass, AX, AY, ASpeedX, ASpeedY, AAngle, AAngularSpeed, AWidth, AHeight);
+  FBonusType := ABonusType;
 end;
 
 destructor TBonus.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.
