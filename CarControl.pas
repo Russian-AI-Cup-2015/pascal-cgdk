@@ -23,6 +23,7 @@ type
         FDurability: Double;
         FEnginePower: Double;
         FWheelTurn: Double;
+        FNextWaypointIndex: LongInt;
         FNextWaypointX: LongInt;
         FNextWaypointY: LongInt;
         FFinishedTrack: Boolean;
@@ -34,7 +35,7 @@ type
                 oilCanisterCount: LongInt; remainingProjectileCooldownTicks: LongInt;
                 remainingNitroCooldownTicks: LongInt; remainingOilCooldownTicks: LongInt; remainingNitroTicks: LongInt;
                 remainingOiledTicks: LongInt; durability: Double; enginePower: Double; wheelTurn: Double;
-                nextWaypointX: LongInt; nextWaypointY: LongInt; finishedTrack: Boolean);
+                nextWaypointIndex: LongInt; nextWaypointX: LongInt; nextWaypointY: LongInt; finishedTrack: Boolean);
 
         function GetPlayerId: Int64;
         function GetTeammateIndex: LongInt;
@@ -51,6 +52,7 @@ type
         function GetDurability: Double;
         function GetEnginePower: Double;
         function GetWheelTurn: Double;
+        function GetNextWaypointIndex: LongInt;
         function GetNextWaypointX: LongInt;
         function GetNextWaypointY: LongInt;
         function GetFinishedTrack: Boolean;
@@ -68,8 +70,8 @@ constructor TCar.Create(id: Int64; mass: Double; x: Double; y: Double; speedX: D
         carType: TCarType; projectileCount: LongInt; nitroChargeCount: LongInt; oilCanisterCount: LongInt;
         remainingProjectileCooldownTicks: LongInt; remainingNitroCooldownTicks: LongInt;
         remainingOilCooldownTicks: LongInt; remainingNitroTicks: LongInt; remainingOiledTicks: LongInt;
-        durability: Double; enginePower: Double; wheelTurn: Double; nextWaypointX: LongInt; nextWaypointY: LongInt;
-        finishedTrack: Boolean);
+        durability: Double; enginePower: Double; wheelTurn: Double; nextWaypointIndex: LongInt; nextWaypointX: LongInt;
+        nextWaypointY: LongInt; finishedTrack: Boolean);
 begin
     inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height);
 
@@ -88,6 +90,7 @@ begin
     FDurability := durability;
     FEnginePower := enginePower;
     FWheelTurn := wheelTurn;
+    FNextWaypointIndex := nextWaypointIndex;
     FNextWaypointX := nextWaypointX;
     FNextWaypointY := nextWaypointY;
     FFinishedTrack := finishedTrack;
@@ -166,6 +169,11 @@ end;
 function TCar.GetWheelTurn: Double;
 begin
     result := FWheelTurn;
+end;
+
+function TCar.GetNextWaypointIndex: LongInt;
+begin
+    result := FNextWaypointIndex;
 end;
 
 function TCar.GetNextWaypointX: LongInt;

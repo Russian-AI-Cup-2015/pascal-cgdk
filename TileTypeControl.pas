@@ -19,7 +19,8 @@ const
     TOP_HEADED_T       : LongInt = 9;
     BOTTOM_HEADED_T    : LongInt = 10;
     CROSSROADS         : LongInt = 11;
-    _TILE_TYPE_COUNT_  : LongInt = 12;
+    UNKNOWN            : LongInt = 12;
+    _TILE_TYPE_COUNT_  : LongInt = 13;
 
 type
     TTileType = LongInt;

@@ -157,7 +157,7 @@ end;
 procedure TRemoteProcessClient.WriteProtocolVersionMessage;
 begin
     WriteEnum(PROTOCOL_VERSION);
-    WriteInt(1);
+    WriteInt(2);
 end;
 
 function TRemoteProcessClient.ReadGameContextMessage: TGame;
@@ -309,6 +309,7 @@ var
     durability: Double;
     enginePower: Double;
     wheelTurn: Double;
+    nextWaypointIndex: LongInt;
     nextWaypointX: LongInt;
     nextWaypointY: LongInt;
     finishedTrack: Boolean;
@@ -344,6 +345,7 @@ begin
     durability := ReadDouble;
     enginePower := ReadDouble;
     wheelTurn := ReadDouble;
+    nextWaypointIndex := ReadInt;
     nextWaypointX := ReadInt;
     nextWaypointY := ReadInt;
     finishedTrack := ReadBoolean;
@@ -351,7 +353,7 @@ begin
     result := TCar.Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height, playerId, teammateIndex,
             teammate, carType, projectileCount, nitroChargeCount, oilCanisterCount, remainingProjectileCooldownTicks,
             remainingNitroCooldownTicks, remainingOilCooldownTicks, remainingNitroTicks, remainingOiledTicks,
-            durability, enginePower, wheelTurn, nextWaypointX, nextWaypointY, finishedTrack);
+            durability, enginePower, wheelTurn, nextWaypointIndex, nextWaypointX, nextWaypointY, finishedTrack);
 end;
 
 procedure TRemoteProcessClient.WriteCar(car: TCar);
@@ -388,6 +390,7 @@ begin
     WriteDouble(car.GetDurability);
     WriteDouble(car.GetEnginePower);
     WriteDouble(car.GetWheelTurn);
+    WriteInt(car.GetNextWaypointIndex);
     WriteInt(car.GetNextWaypointX);
     WriteInt(car.GetNextWaypointY);
     WriteBoolean(car.GetFinishedTrack);
@@ -1111,11 +1114,14 @@ begin
         FMapName := ReadString;
     end;
     mapName := FMapName;
+
+    tilesXY := ReadEnumArray2D;
     
-    if FTilesXY = nil then begin
-        FTilesXY := ReadEnumArray2D;
+    if (not (tilesXY = nil)) then begin
+        if (Length(tilesXY) > 0) then begin
+            FTilesXY := tilesXY;
+        end;
     end;
-    tilesXY := FTilesXY;
 
     if FWaypoints = nil then begin
         FWaypoints := ReadIntArray2D;
@@ -1128,7 +1134,7 @@ begin
     startingDirection := FStartingDirection;
 
     result := TWorld.Create(tick, tickCount, lastTickIndex, width, height, players, cars, projectiles, bonuses,
-            oilSlicks, mapName, tilesXY, waypoints, startingDirection);
+            oilSlicks, mapName, FTilesXY, waypoints, startingDirection);
 end;
 
 procedure TRemoteProcessClient.WriteWorld(world: TWorld);
