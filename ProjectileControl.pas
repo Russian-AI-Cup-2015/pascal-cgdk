@@ -3,60 +3,64 @@ unit ProjectileControl;
 interface
 
 uses
-    Math, TypeControl, CircularUnitControl, ProjectileTypeControl;
+  Math, TypeControl, CircularUnitControl, ProjectileTypeControl;
 
 type
-    TProjectile = class (TCircularUnit)
-    private
-        FCarId: Int64;
-        FPlayerId: Int64;
-        FType: TProjectileType;
+  TProjectile = class (TCircularUnit)
+  private
+    FCarId: Int64;
+    FPlayerId: Int64;
+    FType: TProjectileType;
 
-    public
-        constructor Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-                angularSpeed: Double; radius: Double; carId: Int64; playerId: Int64; projectileType: TProjectileType);
+  public
+    constructor Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
+      const speedY: Double; const angle: Double; const angularSpeed: Double; const radius: Double; const carId: Int64;
+      const playerId: Int64; const projectileType: TProjectileType);
 
-        function GetCarId: Int64;
-        function GetPlayerId: Int64;
-        function GetType: TProjectileType;
+    function GetCarId: Int64;
+    property CarId: Int64 read GetCarId;
+    function GetPlayerId: Int64;
+    property PlayerId: Int64 read GetPlayerId;
+    function GetType: TProjectileType;
+    property ProjectileType: TProjectileType read GetType;
 
-        destructor Destroy; override;
+    destructor Destroy; override;
 
-    end;
+  end;
 
-    TProjectileArray = array of TProjectile;
+  TProjectileArray = array of TProjectile;
 
 implementation
 
-constructor TProjectile.Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double;
-        angle: Double; angularSpeed: Double; radius: Double; carId: Int64; playerId: Int64;
-        projectileType: TProjectileType);
+constructor TProjectile.Create(const id: Int64; const mass: Double; const x: Double; const y: Double;
+  const speedX: Double; const speedY: Double; const angle: Double; const angularSpeed: Double; const radius: Double;
+  const carId: Int64; const playerId: Int64; const projectileType: TProjectileType);
 begin
-    inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, radius);
+  inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, radius);
 
-    FCarId := carId;
-    FPlayerId := playerId;
-    FType := projectileType;
+  FCarId := carId;
+  FPlayerId := playerId;
+  FType := projectileType;
 end;
 
 function TProjectile.GetCarId: Int64;
 begin
-    result := FCarId;
+  result := FCarId;
 end;
 
 function TProjectile.GetPlayerId: Int64;
 begin
-    result := FPlayerId;
+  result := FPlayerId;
 end;
 
 function TProjectile.GetType: TProjectileType;
 begin
-    result := FType;
+  result := FType;
 end;
 
 destructor TProjectile.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.

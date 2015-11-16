@@ -3,43 +3,46 @@ unit BonusControl;
 interface
 
 uses
-    Math, TypeControl, BonusTypeControl, RectangularUnitControl;
+  Math, TypeControl, BonusTypeControl, RectangularUnitControl;
 
 type
-    TBonus = class (TRectangularUnit)
-    private
-        FType: TBonusType;
+  TBonus = class (TRectangularUnit)
+  private
+    FType: TBonusType;
 
-    public
-        constructor Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-                angularSpeed: Double; width: Double; height: Double; bonusType: TBonusType);
+  public
+    constructor Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
+      const speedY: Double; const angle: Double; const angularSpeed: Double; const width: Double; const height: Double;
+      const bonusType: TBonusType);
 
-        function GetType: TBonusType;
+    function GetType: TBonusType;
+    property BonusType: TBonusType read GetType;
 
-        destructor Destroy; override;
+    destructor Destroy; override;
 
-    end;
+  end;
 
-    TBonusArray = array of TBonus;
+  TBonusArray = array of TBonus;
 
 implementation
 
-constructor TBonus.Create(id: Int64; mass: Double; x: Double; y: Double; speedX: Double; speedY: Double; angle: Double;
-        angularSpeed: Double; width: Double; height: Double; bonusType: TBonusType);
+constructor TBonus.Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
+  const speedY: Double; const angle: Double; const angularSpeed: Double; const width: Double; const height: Double;
+  const bonusType: TBonusType);
 begin
-    inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height);
+  inherited Create(id, mass, x, y, speedX, speedY, angle, angularSpeed, width, height);
 
-    FType := bonusType;
+  FType := bonusType;
 end;
 
 function TBonus.GetType: TBonusType;
 begin
-    result := FType;
+  result := FType;
 end;
 
 destructor TBonus.Destroy;
 begin
-    inherited;
+  inherited;
 end;
 
 end.
