@@ -52,3 +52,10 @@ __history/
 *.~*
 
 /wipe.bat
+
+# Free Pascal compiler-generated binaries (safe to delete)
+*.ppu
+*.o
+
+# Any logs (compilation.log and any user's logs)
+*.log
