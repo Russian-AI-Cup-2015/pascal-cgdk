@@ -17,10 +17,6 @@ type
     FAngle: Double;
     FAngularSpeed: Double;
 
-  protected
-    constructor Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
-      const speedY: Double; const angle: Double; const angularSpeed: Double);
-
   public
     function GetId: Int64;
     property Id: Int64 read GetId;
@@ -44,6 +40,8 @@ type
     function GetDistanceTo(x: Double; y: Double): Double; overload;
     function GetDistanceTo(otherUnit: TUnit): Double; overload;
 
+    constructor Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
+      const speedY: Double; const angle: Double; const angularSpeed: Double);
     destructor Destroy; override;
 
   end;

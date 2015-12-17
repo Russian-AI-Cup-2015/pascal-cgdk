@@ -11,16 +11,14 @@ type
     FWidth: Double;
     FHeight: Double;
 
-  protected
-    constructor Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
-      const speedY: Double; const angle: Double; const angularSpeed: Double; const width: Double; const height: Double);
-
   public
     function GetWidth: Double;
     property Width: Double read GetWidth;
     function GetHeight: Double;
     property Height: Double read GetHeight;
 
+    constructor Create(const id: Int64; const mass: Double; const x: Double; const y: Double; const speedX: Double;
+      const speedY: Double; const angle: Double; const angularSpeed: Double; const width: Double; const height: Double);
     destructor Destroy; override;
 
   end;
