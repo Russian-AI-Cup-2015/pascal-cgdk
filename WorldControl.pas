@@ -165,47 +165,62 @@ end;
 
 function TWorld.GetPlayers: TPlayerArray;
 begin
+  Result := FPlayers;
+{
   if Assigned(FPlayers) then begin
     result := Copy(FPlayers, 0, Length(FPlayers));
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetCars: TCarArray;
 begin
+  Result := FCars;
+{
   if Assigned(FCars) then begin
     result := Copy(FCars, 0, Length(FCars));
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetProjectiles: TProjectileArray;
 begin
+  Result := FProjectiles;
+{
   if Assigned(FProjectiles) then begin
     result := Copy(FProjectiles, 0, Length(FProjectiles));
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetBonuses: TBonusArray;
 begin
+  Result := FBonuses;
+{
   if Assigned(FBonuses) then begin
     result := Copy(FBonuses, 0, Length(FBonuses));
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetOilSlicks: TOilSlickArray;
 begin
+  Result := FOilSlicks;
+{
   if Assigned(FOilSlicks) then begin
     result := Copy(FOilSlicks, 0, Length(FOilSlicks));
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetMapName: String;
@@ -214,10 +229,13 @@ begin
 end;
 
 function TWorld.GetTilesXY: TTileTypeArray2D;
+{
 var
   i: LongInt;
-
+}
 begin
+  Result := FTilesXY;
+{
   if Assigned(FTilesXY) then begin
     SetLength(result, Length(FTilesXY));
 
@@ -231,13 +249,17 @@ begin
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetWaypoints: TLongIntArray2D;
+{
 var
   i: LongInt;
-
+}
 begin
+  Result := FWaypoints;
+{
   if Assigned(FWaypoints) then begin
     SetLength(result, Length(FWaypoints));
 
@@ -251,6 +273,7 @@ begin
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TWorld.GetStartingDirection: TDirection;
