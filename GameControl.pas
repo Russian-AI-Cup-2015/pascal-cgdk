@@ -333,11 +333,14 @@ end;
 
 function TGame.GetFinishTrackScores: TLongIntArray;
 begin
+  Result := FFinishTrackScores;
+{
   if Assigned(FFinishTrackScores) then begin
     result := Copy(FFinishTrackScores, 0, Length(FFinishTrackScores));
   end else begin
     result := nil;
   end;
+}
 end;
 
 function TGame.GetFinishLapScore: LongInt;
