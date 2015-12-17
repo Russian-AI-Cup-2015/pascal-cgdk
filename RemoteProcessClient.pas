@@ -1312,12 +1312,15 @@ procedure TRemoteProcessClient.WriteString(value: String);
 var
   len, i: LongInt;
   bytes: TByteArray;
+  AnsiValue: AnsiString;
 
 begin
-  len := Length(value);
+  AnsiValue := AnsiString(value);
+
+  len := Length(AnsiValue);
   SetLength(bytes, len);
   for i := 1 to len do begin
-    bytes[i - 1] := Ord(value[i]);
+    bytes[i - 1] := Ord(AnsiValue[i]);
   end;
 
   WriteInt(len);
@@ -1350,7 +1353,7 @@ function TRemoteProcessClient.ReadString: String;
 var
   len, i: LongInt;
   bytes: TByteArray;
-  res: String;
+  res: AnsiString;
 
 begin
   len := ReadInt;
@@ -1361,11 +1364,11 @@ begin
   res := '';
   bytes := ReadBytes(len);
   for i := 0 to len - 1 do begin
-    res := res + Chr(bytes[i]);
+    res := res + AnsiChar(bytes[i]);
   end;
     
   Finalize(bytes);
-  result := res;
+  result := string(res);
 end;
 
 procedure TRemoteProcessClient.WriteDouble(value: Double);

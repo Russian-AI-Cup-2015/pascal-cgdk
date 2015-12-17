@@ -27,14 +27,14 @@ implementation
 function HostToIP(host: string): string;
 var
   wsdata: TWSAData;
-  hostName: array [0..255] of char;
+  hostName: array [0..255] of AnsiChar;
   hostEnt: PHostEnt;
-  addr: PChar;
+  addr: PAnsiChar;
 begin
   WSAStartup ($0101, wsdata);
   try
     gethostname(hostName, sizeof (hostName));
-    StrPCopy(hostName, host);
+    StrPCopy(hostName, AnsiString(host));
     hostEnt := gethostbyname (hostName);
     if (Assigned(hostEnt) and Assigned(hostEnt^.h_addr_list)) then begin
       addr := hostEnt^.h_addr_list^;
@@ -56,7 +56,6 @@ constructor ClientSocket.Create(address: string; port: Integer);
 var
   addr: TSockAddr;
   host: string;
-  phost: pchar;
 begin
   host := HostToIP(address);
 
@@ -64,15 +63,12 @@ begin
     raise SocketException.Create('Unable to resolve address [' + address + '] to ip.');
   end;
 
-  host := host + #0;
-  phost := @host[1];
-
   if (self.s = INVALID_SOCKET) then begin
     raise SocketException.Create('Unable to create socket.');
   end;
 
   addr.sin_family := AF_INET;
-  addr.sin_addr.S_addr := inet_addr(phost);
+  addr.sin_addr.S_addr := inet_addr(PAnsiChar(AnsiString(host)));
 
   self.s := socket(AF_INET, SOCK_STREAM, 0);
   if self.s = INVALID_SOCKET then begin
@@ -82,7 +78,7 @@ begin
   addr.sin_port := htons(port);
 
   if (connect(self.s, addr, sizeof(addr)) <> 0) then begin
-    raise SocketException.Create('Unable to connect [host="' + phost +
+    raise SocketException.Create('Unable to connect [host="' + host +
       '", port=' + IntToStr(port) + '].');
   end;
 end;
